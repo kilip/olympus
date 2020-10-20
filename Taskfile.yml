@@ -1,0 +1,52 @@
+version: "3"
+
+dotenv: ['.env']
+
+vars:
+  ansible: "ansible -i ${INVENTORY}"
+  playbook: "K8S_AUTH_KUBECONFIG=$PWD/kubeconfig ansible-playbook -i ${INVENTORY}"
+
+tasks:
+  pyenv:
+    desc: build python3 virtual environment
+    cmds:
+    - python3 -m venv venv
+
+  ping:
+    desc: check nodes availability
+    cmds:
+    - "{{.ansible}} -m ping all"
+  
+  deps:
+    desc: build python and ansible dependencies
+    cmds:
+    - pip install --upgrade pip
+    - pip install wheel
+    - pip install -r ansible/requirements.txt
+    - ansible-galaxy install -r ansible/galaxy.yml
+
+  converge:
+    desc: converge nodes into k3s clusters
+    cmds:
+    - "{{.playbook}} -K ./converge.yml"
+
+  cleanup:
+    desc: remove k3s installation from all nodes
+    cmds:
+    - "{{.playbook}} -K ./cleanup.yml"
+
+  bootstrap:
+    desc: runs gotk bootstrap
+    cmds:
+    - echo "${GITHUB_USER}"
+    - |
+      gotk bootstrap github \
+      --owner=${GITHUB_USER} \
+      --repository=olympus-k3s-gitops \
+      --branch=dev \
+      --path=${GOTK_PATH}
+
+  reboot:
+    desc: reboot all cluster nodes
+    cmds:
+    - "{{.ansible}} -K -b -a 'reboot' k3s_cluster"
