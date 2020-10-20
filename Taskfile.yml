@@ -22,8 +22,8 @@ tasks:
     cmds:
     - pip install --upgrade pip
     - pip install wheel
-    - pip install -r ansible/requirements.txt
-    - ansible-galaxy install -r ansible/galaxy.yml
+    - pip install -r requirements.txt
+    - ansible-galaxy install -r galaxy.yml
 
   converge:
     desc: converge nodes into k3s clusters
@@ -34,17 +34,6 @@ tasks:
     desc: remove k3s installation from all nodes
     cmds:
     - "{{.playbook}} -K ./cleanup.yml"
-
-  bootstrap:
-    desc: runs gotk bootstrap
-    cmds:
-    - echo "${GITHUB_USER}"
-    - |
-      gotk bootstrap github \
-      --owner=${GITHUB_USER} \
-      --repository=olympus-k3s-gitops \
-      --branch=dev \
-      --path=${GOTK_PATH}
 
   reboot:
     desc: reboot all cluster nodes
