@@ -6,6 +6,6 @@ ansible_user: toni
 systemd_dir: /etc/systemd/system
 master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
 extra_server_args: |
-  --tls-san k3s.itstoni.com --no-deploy traefik --no-deploy servicelb --no-deploy metrics-server --no-deploy local-storage --flannel-backend=host-gw --datastore-cafile=/etc/etcd/etcd-ca.crt --datastore-certfile=/etc/etcd/server.crt --datastore-keyfile=/etc/etcd/server.key  --datastore-endpoint="https://10.0.10.11:2379,https://10.0.10.12:2379,https://10.0.10.13:2379"
+  --tls-san k3s.itstoni.com --no-deploy traefik --no-deploy servicelb --no-deploy metrics-server --no-deploy local-storage --flannel-backend=host-gw --datastore-cafile=/etc/etcd/etcd-ca.crt --datastore-certfile=/etc/etcd/server.crt --datastore-keyfile=/etc/etcd/server.key  --datastore-endpoint="https://hera-dev:2379,https://iris-dev:2379,https://mars-dev:2379"
 
 #ca_pem_file: "{{ playbook_dir }}/.secrets/cfssl/ca.pem"
