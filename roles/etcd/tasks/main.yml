@@ -16,3 +16,9 @@
   notify: restart etcd
 
 - include_tasks: config.yml
+
+- name: ensure etcd service started and enabled
+  service:
+    name: etcd
+    enabled: yes
+    state: restarted

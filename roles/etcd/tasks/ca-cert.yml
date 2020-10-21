@@ -24,7 +24,7 @@
 
 - name: ensure server cert exists
   shell: |
-    echo '{"CN":"{{ item }}","hosts":[""],"key":{"algo":"rsa","size":2048}}' |
+    echo '{"CN":"'{{ item }}'","hosts":[""],"key":{"algo":"rsa","size":2048}}' |
     {{ cfssl_bin }} gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="{{ hostvars[item]['ansible_host'] }},{{ item }}" - |
     {{ cfssljson_bin }} -bare {{ item }}
   args:
