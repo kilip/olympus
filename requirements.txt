@@ -1,6 +1,7 @@
 ansible
 molecule
 molecule[lint]
+molecule-docker
 docker
 kubernetes
 openshift

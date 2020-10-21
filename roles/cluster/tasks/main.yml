@@ -15,3 +15,7 @@
 - name: "apply netplan changes"
   shell: "netplan apply --debug"
   when: result.changed
+
+- name: "include k3s role"
+  include_role:
+    name: xanmanning.k3s

@@ -1,0 +1,27 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: molecule-olympus
+    hostname: molecule-olympus
+    groups:
+    - k3s_nodes
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
+    pre_build_image: true
+    privileged: true
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: "../../roles"
+    MOLECULE_NO_LOG: false
+  inventory:
+    host_vars:
+      molecule-olympus:
+        ansible_host: "127.0.0.1"
+verifier:
+  name: ansible

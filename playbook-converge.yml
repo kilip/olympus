@@ -1,0 +1,3 @@
+- name: converge olympus cluster
+  become: true
+  import_playbook: "playbook-cluster.yml"

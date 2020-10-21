@@ -4,7 +4,7 @@ dotenv: ['.env']
 
 vars:
   ansible: "ansible -i ${INVENTORY}"
-  playbook: "K8S_AUTH_KUBECONFIG=$PWD/kubeconfig ansible-playbook -i ${INVENTORY}"
+  playbook: "ansible-playbook -i ${INVENTORY}"
 
 tasks:
   pyenv:
@@ -24,21 +24,16 @@ tasks:
     - pip install wheel
     - pip install -r requirements.txt
     - ansible-galaxy install -r galaxy.yml
-  
-  etcd:
-    desc: configures etcd
-    cmds:
-    - "{{.playbook}} -K ./etcd.yml"
-    
+      
   converge:
     desc: converge nodes into k3s clusters
     cmds:
-    - "{{.playbook}} -K -b ./converge.yml"
+    - "{{.playbook}} -K -b ./playbook-converge.yml"
 
   cleanup:
     desc: remove k3s installation from all nodes
     cmds:
-    - "{{.playbook}} -K ./cleanup.yml"
+    - "{{.playbook}} -K ./playbook-cleanup.yml"
 
   reboot:
     desc: reboot all cluster nodes
@@ -49,3 +44,4 @@ tasks:
     desc: fetch kubeconfig from nodes
     cmds:
     - "scp {{.server}}:/etc/rancher/k3s/k3s.yaml kubeconfig"
+    - "sed -i 's|127.0.0.1|{{.server}}|g' kubeconfig"

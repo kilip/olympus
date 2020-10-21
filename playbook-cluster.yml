@@ -12,3 +12,10 @@
     - name: installs/configures etcd
       include_role:
         name: etcd
+
+- hosts: "k3s_nodes"
+  become: true
+  tasks:
+    - name: include preflight tasks
+      include_role: 
+        name: cluster

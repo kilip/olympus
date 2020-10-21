@@ -1,0 +1,6 @@
+{% for item in freeradius_clients %}
+client {{ item.ip }} {
+    secret  = {{ item.secret }}
+    nastype = {{ item.nastype }}
+}
+{% endfor %}

@@ -1,0 +1,33 @@
+- name: ensure freeradius package installed
+  package:
+    name: freeradius
+    state: present
+
+- name: ensure clients.conf included
+  lineinfile:
+    path: /etc/freeradius/3.0/radiusd.conf
+    line: "$INCLUDE clients.conf"
+
+- name: ensure clients.conf template rendered
+  template:
+    src: clients.conf.j2
+    dest: /etc/freeradius/3.0/clients.conf
+
+- name: ensure clients.conf template rendered
+  template:
+    src: clients.conf.j2
+    dest: /etc/freeradius/3.0/clients.conf
+  notify: restart freeradius
+
+- name: ensure user exists
+  lineinfile:
+    path: /etc/freeradius/3.0/users
+    line: "{{ item.username }} Cleartext-Password :=\"{{ item.password }}\""
+  with_items: "{{ freeradius_users }}"
+  notify: restart freeradius
+
+- name: ensure freeradius service started
+  service:
+    name: freeradius
+    enabled: yes
+    state: started

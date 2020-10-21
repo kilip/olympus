@@ -1,0 +1,31 @@
+---
+- name: create etcd cert
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: create etcd certs
+      include_role:
+        name: etcd
+        tasks_from: "ca-cert.yml"
+
+- name: Converge Freeradius
+  hosts: molecule-olympus
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=true cache_valid_time=600
+      changed_when: false
+      when: ansible_os_family == 'Debian'
+  vars:
+    molecule_is_test: false
+    freeradius_clients:
+      - ip: 10.0.0.1
+        secret: some-password
+        nastype: other
+    freeradius_users:
+      - username: test
+        password: test
+  tasks:
+    - include_role:
+        name: etcd
+    - include_role:
+        name: cluster

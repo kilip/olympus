@@ -14,3 +14,5 @@ cert_temp: "/tmp/etcd"
 _init_clusters: []
 
 etcd_initial_cluster: ""
+
+etcd_pwd: "{{ lookup('env','PWD') }}"
