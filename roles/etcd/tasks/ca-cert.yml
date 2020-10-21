@@ -1,0 +1,32 @@
+- name: ensure cfssl installed
+  get_url:
+    url: "{{ cfssl_url }}"
+    dest: "{{ cfssl_bin }}"
+    mode: "0777"
+
+- name: ensure cfssl json installed
+  get_url:
+    url: "{{ cfssljson_url }}"
+    dest: "{{ cfssljson_bin }}"
+    mode: "0777"
+
+- name: ensure ca-cert generated
+  shell:
+    cmd: "{{ item }}"
+  args:
+    chdir: "{{ playbook_dir }}/files/etcd"
+    creates: 
+      - "{{ playbook_dir }}/files/etcd/ca.pem"
+  with_items:
+    - echo '{"CN":"CA","key":{"algo":"rsa","size":2048}}' | {{ cfssl_bin }} gencert -initca - | {{ cfssljson_bin }} -bare ca -
+    - echo '{"signing":{"default":{"expiry":"43800h","usages":["signing","key encipherment","server auth","client auth"]}}}' > ca-config.json
+  changed_when: false
+
+- name: ensure server cert exists
+  shell: |
+    echo '{"CN":"{{ item }}","hosts":[""],"key":{"algo":"rsa","size":2048}}' |
+    {{ cfssl_bin }} gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="{{ hostvars[item]['ansible_host'] }},{{ item }}" - |
+    {{ cfssljson_bin }} -bare {{ item }}
+  args:
+    chdir: "{{ playbook_dir }}/files/etcd"
+  with_items: "{{ groups['master'] }}"

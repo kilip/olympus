@@ -1,0 +1,14 @@
+#- hosts: localhost
+#  gather_facts: no
+#  tasks:
+#    - name: generate etcd ca cert
+#      include_role:
+#        name: etcd
+#        tasks_from: "ca-cert.yml"
+
+- hosts: master
+  become: true
+  tasks:
+    - name: installs/configures etcd
+      include_role:
+        name: etcd

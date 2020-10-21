@@ -1,0 +1,18 @@
+- name: "install etcd server"
+  include_role:
+    name: "andrewrothstein.etcd"
+  vars:
+    etcd_version: v3.4.10
+
+- name: configure services
+  template:
+    src: service.conf.j2
+    dest: "/lib/systemd/system/etcd.service"
+  register: result
+
+- name: reload daemon
+  command: systemctl daemon-reload
+  when: result.changed
+  notify: restart etcd
+
+- include_tasks: config.yml

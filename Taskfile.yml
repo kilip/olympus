@@ -24,7 +24,12 @@ tasks:
     - pip install wheel
     - pip install -r requirements.txt
     - ansible-galaxy install -r galaxy.yml
-
+  
+  etcd:
+    desc: configures etcd
+    cmds:
+    - "{{.playbook}} -K ./etcd.yml"
+    
   converge:
     desc: converge nodes into k3s clusters
     cmds:
@@ -39,3 +44,4 @@ tasks:
     desc: reboot all cluster nodes
     cmds:
     - "{{.ansible}} -K -b -a 'reboot' k3s_cluster"
+  

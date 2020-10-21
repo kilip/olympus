@@ -4,3 +4,6 @@
     - name: include preflight tasks
       include_role: 
         name: cluster
+    
+#- name: "include k3s-cluster tasks"
+#  import_playbook: "./vendor/k3s-ansible/site.yml"

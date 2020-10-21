@@ -1,2 +1,4 @@
+roles:
+  - andrewrothstein.etcd
 collections:
-- community.kubernetes
+  - community.kubernetes

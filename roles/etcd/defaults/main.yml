@@ -1,0 +1,16 @@
+---
+cfssl_url: "https://pkg.cfssl.org/R1.2/cfssl_linux-amd64"
+cfssljson_url: "https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64"
+
+cfssl_bin: "{{ lookup('env','HOME') }}/.local/bin/cfssl"
+cfssljson_bin: "{{ lookup('env','HOME') }}/.local/bin/cfssljson"
+
+ca_config: "files/ca-config.json"
+ca_csr: "files/ca-csr.json"
+
+cert_path: "/etc/etcd"
+cert_temp: "/tmp/etcd"
+
+_init_clusters: []
+
+etcd_initial_cluster: ""

@@ -1,0 +1,2 @@
+- name: import reset playbook from k3s-ansible
+  import_playbook: "./vendor/k3s-ansible/reset.yml"

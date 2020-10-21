@@ -1,0 +1,17 @@
+- name: "fix resolv.conf file"
+  shell: "ln -sfn /run/systemd/resolve/resolv.conf /etc/resolv.conf"
+  args:
+    warn: no
+  changed_when: false
+
+- name: "configures netplan"
+  copy:
+    content: "{{ netplan_config }}"
+    dest: "/etc/netplan/50-cloud-init.yaml"
+    backup: yes
+  register: result
+  when: netplan_config is defined
+
+- name: "apply netplan changes"
+  shell: "netplan apply --debug"
+  when: result.changed

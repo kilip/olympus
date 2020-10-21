@@ -6,18 +6,6 @@ ansible_user: toni
 systemd_dir: /etc/systemd/system
 master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
 extra_server_args: |
-  --tls-san k3s.itstoni.com --no-deploy traefik --no-deploy servicelb --no-deploy metrics-server --no-deploy local-storage --flannel-backend=host-gw
+  --tls-san k3s.itstoni.com --no-deploy traefik --no-deploy servicelb --no-deploy metrics-server --no-deploy local-storage --flannel-backend=host-gw --datastore-endpoint="postgres://olympus:olympus@10.0.10.11:5432/database-name"
 
-netplan_config: |
-  network:
-    ethernets:
-      enp0s3:
-        dhcp4: true
-        addresses:
-          - 10.60.0.21/24
-          - 10.60.0.22/24
-          - 10.60.0.23/24
-          - 10.60.0.24/24
-          - 10.60.0.25/24
-        gateway4: 10.60.0.1
-    version: 2
+#ca_pem_file: "{{ playbook_dir }}/.secrets/cfssl/ca.pem"
