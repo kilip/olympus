@@ -27,4 +27,4 @@
   service:
     name: etcd
     enabled: yes
-    state: restarted
+    state: started
