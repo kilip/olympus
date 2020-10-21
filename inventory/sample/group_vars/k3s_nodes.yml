@@ -1,5 +1,7 @@
 ---
+# ip address for cluster worker registration
 k3s_control_node_address: 10.0.60.11
+
 k3s_datastore_endpoint: "https://10.0.60.11:2379,https://10.0.60.12:2379,https://10.0.60.13:2379"
 
 molecule_is_test: false
