@@ -1,12 +1,20 @@
-- name: install/configures etcd
-  import_playbook: "./etcd.yml"
+#- name: install/configures etcd
+#  import_playbook: "./etcd.yml"
 
-- hosts: "k3s_cluster"
+#- hosts: "k3s_nodes"
+#  become: true
+#  tasks:
+#    - name: include preflight tasks
+#      include_role: 
+#        name: cluster
+
+- hosts: k3s_nodes
   become: true
+  vars:
+    molecule_is_test: false
+    k3s_control_node_address: 10.0.10.11
+    k3s_control_node: true
   tasks:
-    - name: include preflight tasks
-      include_role: 
-        name: cluster
-    
-- name: "include k3s-cluster tasks"
-  import_playbook: "./vendor/k3s-ansible/site.yml"
+    - name: inlude k3s roles
+      include_role:
+        name: xanmanning.k3s

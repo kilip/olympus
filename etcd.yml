@@ -6,7 +6,7 @@
         name: etcd
         tasks_from: "ca-cert.yml"
 
-- hosts: master
+- hosts: k3s_nodes
   become: true
   tasks:
     - name: installs/configures etcd

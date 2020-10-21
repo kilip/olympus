@@ -23,7 +23,7 @@
 - name: prepare etcd conf template vars
   set_fact:
     _init_clusters: "{{ _init_clusters + [item ~'=https://' ~ hostvars[item]['ansible_host'] ~ ':2380'] }}"
-  with_items: "{{ groups['master'] }}"
+  with_items: "{{ groups['k3s_nodes'] }}"
   
 - set_fact:
     etcd_initial_cluster: "{{ _init_clusters|join(',') }}"

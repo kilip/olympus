@@ -1,11 +1,18 @@
 ---
-_pwd: "{{ lookup('env', 'PWD') }}"
-# k3s nodes setup
-k3s_version: v1.18.3+k3s1
-ansible_user: toni
-systemd_dir: /etc/systemd/system
-master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
-extra_server_args: |
-  --tls-san k3s.itstoni.com --no-deploy traefik --no-deploy servicelb --no-deploy metrics-server --no-deploy local-storage --flannel-backend=host-gw --datastore-cafile=/etc/etcd/etcd-ca.crt --datastore-certfile=/etc/etcd/server.crt --datastore-keyfile=/etc/etcd/server.key  --datastore-endpoint="https://hera-dev:2379,https://iris-dev:2379,https://mars-dev:2379"
+molecule_is_test: false
 
-#ca_pem_file: "{{ playbook_dir }}/.secrets/cfssl/ca.pem"
+k3s_write_kubeconfig_mode: "0644"
+k3s_become_for_all: yes
+k3s_release_version: stable
+k3s_build_cluster: yes
+k3s_control_node_address: 10.0.10.11
+k3s_datastore_endpoint: "https://10.0.10.11:2379,https://10.0.10.12:2379,https://10.0.10.13:2379"
+k3s_datastore_cafile: "/etc/etcd/etcd-ca.crt"
+k3s_datastore_certfile: "/etc/etcd/server.crt"
+k3s_datastore_keyfile: "/etc/etcd/server.key"
+k3s_control_node: true
+
+k3s_no_traefik: yes
+k3s_no_servicelb: yes
+k3s_no_local_storage: yes
+k3s_no_metrics_server: yes
