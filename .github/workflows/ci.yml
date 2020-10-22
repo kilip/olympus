@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        include:
         - distro: ubuntu
           version: 20.04
     steps:
