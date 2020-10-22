@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Molecule
+    name: Molecule ({{matrix.distro}}-{{matrix.version}})
     runs-on: ubuntu-latest
     strategy:
       matrix:
