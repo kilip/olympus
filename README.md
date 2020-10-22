@@ -2,9 +2,10 @@ Olympus
 ====
 My Homelab Infrastructure
 
-[Network diagrams](https://drive.google.com/file/d/1IUUgyap_ueUx6EJSruuhZQEtDLzQllD1/view?usp=sharing)
 
 ### Overview
+View Network Diagrams [here](https://viewer.diagrams.net/?highlight=0000ff&layers=1&nav=1&title=olympus.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1IUUgyap_ueUx6EJSruuhZQEtDLzQllD1%26export%3Ddownload)
+
 This repo contains ansible installation for all machine in my homelab. It will installs/configures:
 * Workstation Setup (work in progress)
 * Squid  (work in progress)
