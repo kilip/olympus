@@ -2,7 +2,7 @@ Olympus
 ====
 My Homelab Infrastructure
 
-[![GitHub Actions](https://img.shields.io/github/workflow/status/kilip/olympus/CI/master?style=for-the-badge)](https://github.com/kilip/olympus/actions?query=workflow%3ACI+branch%3Amaster)
+[![GitHub Actions](https://img.shields.io/github/workflow/status/kilip/olympus/CI/master?style=flat-square)](https://github.com/kilip/olympus/actions?query=workflow%3ACI+branch%3Amaster)
 
 ### Overview
 View Network Diagrams [here](https://viewer.diagrams.net/?highlight=0000ff&layers=1&nav=1&title=olympus.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1IUUgyap_ueUx6EJSruuhZQEtDLzQllD1%26export%3Ddownload)
