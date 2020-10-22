@@ -18,7 +18,7 @@ This repo contains ansible installation for all machine in my homelab. It will i
 ### Installation
 #### Clone And Create Your Inventory
 Clone this repository:
-```console
+```sh
 $ git clone https://github.com/kilip/olympus.git
 $ cd olympus
 $ cp -r ./inventory/sample ./inventory/your-inventory-name
@@ -31,26 +31,26 @@ Edit ```./inventory/your-inventory-name``` files to match your environment:
 
 #### Converge your machines
 Initialize python environment
-```console
+```sh
 $ task pyenv
 ```
 
 Activate python environment:
-```console
+```sh
 $ source venv/bin/activate
 ```
 
 Install python dependencies:
-```console
+```sh
 $ task deps
 ```
 
 Ensure that all of your machines is on:
-```console
+```sh
 $ task ping
 ```
 
 Converge nodes
-```console
+```sh
 $ task converge
 ```

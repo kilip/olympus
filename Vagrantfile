@@ -47,7 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         # Create a block device for Longhorn on the worker nodes
         if hostname != "k8s-node-10"
-          disk = "./"+hostname+"-block.vdi"
+          disk = "./.vagrant/disks/"+hostname+"-block.vdi"
           unless File.exist?(disk)
             v.customize [
               "createhd",
