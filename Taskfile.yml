@@ -50,3 +50,10 @@ tasks:
     cmds:
     - "scp {{.server}}:/etc/rancher/k3s/k3s.yaml kubeconfig"
     - "sed -i 's|127.0.0.1|{{.server}}|g' kubeconfig"
+
+  dev-sync-sample:
+    desc: sync sample files
+    cmds:
+      - rm -rf ./inventory/sample/group_vars
+      - rm -rf ./inventory/sample/host_vars
+      - cp -rf ./molecule/default/inventory/* ./inventory/sample/

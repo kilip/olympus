@@ -1,0 +1,25 @@
+# more information at: https://github.com/kilip/ansible-role-squid
+squid_configure_firewall: no
+squid_cache_dirs:
+- dir: /srv/cache/disk1
+  type: aufs
+  options: 5000 24 256
+- dir: /srv/cache/disk2
+  type: aufs
+  options: 5000 24 256
+
+# define your squid configuration here
+# squid:
+
+
+# squid https is not working, at least for now
+# so leave this uncommented
+# squid_configure_https: no
+# squid_openssl:
+#  country: ID
+#  province: Kalimantan Timur
+#  locality: Kutai Barat
+#  organization: DoyoLabs
+#  unit_name: Proxy Server
+#  common_name: proxy.olympus.com
+#  passphrase: changeme
