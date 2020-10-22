@@ -13,23 +13,23 @@ cpus = case RbConfig::CONFIG["host_os"]
 end
 
 NODES_NUM = 3
-IP_BASE = "172.16.20."
+IP_BASE ="10.0.60."
+IP_GATEWAY="10.0.60.1"
+NET_IFACE = "eno1"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
 
   (1..NODES_NUM).each do |i|
-    config.vm.define "k8s-node-#{i + 9}" do |config|
+    HOST_INDEX=i+10
+    config.vm.define "k8s-node-#{HOST_INDEX}" do |config|
 
-      hostname = "k8s-node-#{i + 9}"
+      hostname = "k8s-node-#{i + 10}"
 
-      memory = case hostname
-        when "k8s-node-10" then 2048
-        else 1024
-      end
+      memory = 2048
 
       config.vm.box = "bento/ubuntu-20.04"
-      config.vm.network "private_network", ip: "#{IP_BASE}#{i + 9}"
+      config.vm.network "public_network", ip: "#{IP_BASE}#{HOST_INDEX}", bridge: "#{NET_IFACE}"
       config.vm.hostname = hostname
       config.vm.provider "virtualbox"
       config.vm.provider :virtualbox do |v|
@@ -44,28 +44,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           '--audio', 'none',
           "--uartmode1", "file", File::NULL,
         ]
-
-        # Create a block device for Longhorn on the worker nodes
-        if hostname != "k8s-node-10"
-          disk = "./.vagrant/disks/"+hostname+"-block.vdi"
-          unless File.exist?(disk)
-            v.customize [
-              "createhd",
-              "--filename", disk,
-              "--variant", "Fixed",
-              "--size", 1024*5
-            ]
-          end
-          v.customize [
-            "storageattach", :id,
-            "--storagectl", "SATA Controller",
-            "--port", 2,
-            "--device", 0,
-            "--type", "hdd",
-            "--medium", disk
-          ]
-        end
       end
+
+      # delete default gw on eth0
+      #config.vm.provision "shell",
+      #  run: "always",
+      #  inline: "ip route del default"
+
+      # default router
+      config.vm.provision "shell",
+        run: "always",
+        inline: "ip route add default via #{IP_GATEWAY}"
+      
+      config.vm.provision "shell",
+        run: "always",
+        inline: "route del -net 0.0.0.0 gw 192.168.178.1 netmask 0.0.0.0 dev eth0"
     end
   end
 end

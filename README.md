@@ -2,12 +2,15 @@ Olympus
 ====
 My Homelab Infrastructure
 
+[Network diagrams](https://drive.google.com/file/d/1IUUgyap_ueUx6EJSruuhZQEtDLzQllD1/view?usp=sharing)
+
 ### Overview
 This repo contains ansible installation for all machine in my homelab. It will installs/configures:
 * Workstation Setup (work in progress)
 * Squid  (work in progress)
 * Freeradius Server  (work in progress)
 * High Availability K3S cluster using etcd
+
 
 
 ### Prerequisites
