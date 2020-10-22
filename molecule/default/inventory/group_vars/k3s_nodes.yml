@@ -1,0 +1,15 @@
+# k3s configuration
+
+k3s_control_node_address: hostvars['hera-dev']['ansible_default_ipv4']['address']
+
+molecule_is_test: true
+
+k3s_write_kubeconfig_mode: "0644"
+k3s_become_for_all: yes
+k3s_release_version: stable
+k3s_build_cluster: yes
+
+k3s_no_traefik: yes
+k3s_no_servicelb: yes
+k3s_no_local_storage: yes
+k3s_no_metrics_server: yes

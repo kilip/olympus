@@ -1,3 +1,41 @@
-- name: converge olympus cluster
+- name: Preflight
+  hosts: all
+  tasks:
+    - name: etcd preflight check
+      include_role:
+        name: etcd
+        tasks_from: preflight.yml
+      when: "'etcd' in groups"
+
+    - name: k3s cluster preflight check
+      include_role:
+        name: cluster
+        tasks_from: preflight.yml
+      when: "'k3s_nodes' in groups"
+
+    - name: "update cache"
+      apt:
+        update_cache: yes
+        cache_valid_time: 600
+      when: ansible_os_family == 'Debian'
+      
+- name: converge proxy hosts
+  hosts: proxy
+  tasks:
+    - name: include kilip.squid role
+      include_role:
+        name: "kilip.squid"
+
+- hosts: etcd
   become: true
-  import_playbook: "playbook-cluster.yml"
+  tasks:
+    - name: installs/configures etcd
+      include_role:
+        name: etcd
+
+- hosts: "k3s_nodes"
+  become: true
+  tasks:
+    - name: include preflight tasks
+      include_role: 
+        name: cluster

@@ -9,7 +9,7 @@ View Network Diagrams [here](https://viewer.diagrams.net/?highlight=0000ff&layer
 
 This repo contains ansible installation for all machine in my homelab. It will installs/configures:
 * Workstation Setup (work in progress)
-* Squid  (work in progress)
+* Squid
 * Freeradius Server  (work in progress)
 * High Availability K3S cluster using etcd
 

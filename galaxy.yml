@@ -1,5 +1,6 @@
 roles:
   - andrewrothstein.etcd
   - xanmanning.k3s
+  - kilip.squid
 collections:
   - community.kubernetes

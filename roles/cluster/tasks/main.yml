@@ -1,8 +1,14 @@
+- name: get resolv.conf stat
+  stat:
+    path: "{{ resolv_conf_path }}"
+  register: result
+
 - name: "fix resolv.conf file"
-  shell: "ln -sfn /run/systemd/resolve/resolv.conf /etc/resolv.conf"
+  shell: "ln -sfn  /etc/resolv.conf"
   args:
     warn: no
   changed_when: false
+  when: result.stat.exists
 
 - name: "configures netplan"
   copy:
@@ -15,6 +21,18 @@
 - name: "apply netplan changes"
   shell: "netplan apply --debug"
   when: result.changed
+
+- name: "configures etcd certs"
+  set_fact:
+    k3s_datastore_cafile: "/etc/etcd/etcd-ca.crt"
+    k3s_datastore_certfile: "/etc/etcd/server.crt"
+    k3s_datastore_keyfile: "/etc/etcd/server.key"
+  when: "'etcd' in groups"
+
+- name: "set control node to true"
+  set_fact:
+    k3s_control_node: true
+  when: "'master' in groups"
 
 - name: "include k3s role"
   include_role:
