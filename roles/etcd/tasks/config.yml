@@ -1,12 +1,7 @@
-- name: ensure directory exists
-  file:
-    path: "/etc/etcd"
-    state: directory
-
-- name: copy cert files to master nodes
+- name: copy cert files to etcd nodes
   copy:
-    src: "files/etcd/{{ item.src }}"
-    dest: "/etc/etcd/{{ item.dest }}"
+    src: "{{ etcd_cert_local_temp_dir }}/{{ item.src }}"
+    dest: "{{ cert_path }}/{{ item.dest }}"
   with_items:
     - src: "ca.pem"
       dest: "etcd-ca.crt"
@@ -20,13 +15,6 @@
     path: "/etc/etcd/server.key"
     mode: "0600"
 
-- name: prepare etcd conf template vars
-  set_fact:
-    _init_clusters: "{{ _init_clusters + [item ~'=https://' ~ hostvars[item]['ansible_host'] ~ ':2380'] }}"
-  with_items: "{{ groups['k3s_nodes'] }}"
-  
-- set_fact:
-    etcd_initial_cluster: "{{ _init_clusters|join(',') }}"
   
 - debug: var=etcd_initial_cluster
 

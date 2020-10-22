@@ -1,21 +1,18 @@
-- hosts: localhost
-  gather_facts: no
-  tasks:
-    - name: generate etcd ca cert
+- hosts: etcd
+  become: true
+  pre_tasks:
+    - name: preflight check
       include_role:
         name: etcd
-        tasks_from: "ca-cert.yml"
-
-- hosts: k3s_nodes
-  become: true
+        tasks_from: preflight.yml
   tasks:
     - name: installs/configures etcd
       include_role:
         name: etcd
 
-- hosts: "k3s_nodes"
-  become: true
-  tasks:
-    - name: include preflight tasks
-      include_role: 
-        name: cluster
+#- hosts: "k3s_nodes"
+#  become: true
+#  tasks:
+#    - name: include preflight tasks
+#      include_role: 
+#        name: cluster

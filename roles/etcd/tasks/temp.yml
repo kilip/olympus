@@ -1,0 +1,30 @@
+- name: configures hosts file
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item }}"
+  with_items: "{{ host_entries }}"
+
+- name: "install etcd server"
+  include_role:
+    name: "andrewrothstein.etcd"
+  vars:
+    etcd_version: v3.4.10
+
+- name: configure services
+  template:
+    src: service.conf.j2
+    dest: "/lib/systemd/system/etcd.service"
+  register: result
+
+- name: reload daemon
+  command: systemctl daemon-reload
+  when: result.changed
+  notify: restart etcd
+
+- include_tasks: config.yml
+
+- name: ensure etcd service started and enabled
+  service:
+    name: etcd
+    enabled: yes
+    state: started

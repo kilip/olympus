@@ -1,3 +1,8 @@
+- name: ensure rsync installed
+  package:
+    name: rsync
+    state: present
+
 - name: ensure cfssl installed
   get_url:
     url: "{{ cfssl_url }}"
@@ -10,23 +15,53 @@
     dest: "{{ cfssljson_bin }}"
     mode: "0777"
 
+- name: check existing certificate
+  stat:
+    path: "{{ _etcd_cert_dir }}/ca.pem"
+  register: result
+
+- set_fact: 
+    _etcd_create_cert: "{{ not result.stat.exists }}"
+
+- debug: var=_etcd_create_cert
+
 - name: ensure ca-cert generated
   shell:
     cmd: "{{ item }}"
   args:
-    chdir: "{{ etcd_pwd }}/files/etcd"
+    chdir: "{{ _etcd_cert_dir }}"
     creates: 
-      - "{{ etcd_pwd }}/files/etcd/ca.pem"
+      - "{{ _etcd_cert_dir }}/ca.pem"
   with_items:
     - echo '{"CN":"CA","key":{"algo":"rsa","size":2048}}' | {{ cfssl_bin }} gencert -initca - | {{ cfssljson_bin }} -bare ca -
     - echo '{"signing":{"default":{"expiry":"43800h","usages":["signing","key encipherment","server auth","client auth"]}}}' > ca-config.json
-  changed_when: false
+  when: _etcd_create_cert
 
 - name: ensure server cert exists
   shell: |
     echo '{"CN":"'{{ item }}'","hosts":[""],"key":{"algo":"rsa","size":2048}}' |
-    {{ cfssl_bin }} gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="{{ hostvars[item]['ansible_host'] }},{{ item }}" - |
+    {{ cfssl_bin }} gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="{{ hostvars[item]['ansible_default_ipv4']['address'] }},{{ item }}" - |
     {{ cfssljson_bin }} -bare {{ item }}
   args:
-    chdir: "{{ etcd_pwd }}/files/etcd"
-  with_items: "{{ groups['k3s_nodes'] }}"
+    chdir: "{{ _etcd_cert_dir }}"
+  with_items: "{{ groups['etcd'] }}"
+  when: _etcd_create_cert
+
+- name: "ensure local temp dir exists"
+  file:
+    path: "{{ etcd_cert_local_temp_dir }}"
+    state: directory
+
+- name: generate cert files copy list
+  shell: (find . -maxdepth 1 -type f) | cut -d'/' -f2
+  args: 
+    chdir: "{{ _etcd_cert_dir }}"
+  register: _etcd_cert_files
+  changed_when: false
+
+- name: copy cert files into local directory
+  fetch:
+    src: "{{ _etcd_cert_dir }}/{{ item }}"
+    dest: "{{ etcd_cert_local_temp_dir }}/{{ item }}"
+    flat: yes
+  with_items: "{{ _etcd_cert_files.stdout_lines }}"

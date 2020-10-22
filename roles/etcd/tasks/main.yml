@@ -1,29 +1,20 @@
-- name: configures hosts file
-  lineinfile:
-    path: /etc/hosts
-    line: "{{ item }}"
-  with_items: "{{ host_entries }}"
+- debug: var=etcd_initial_cluster
 
-- name: "install etcd server"
+- name: ensure etcd installed
   include_role:
     name: "andrewrothstein.etcd"
-  vars:
-    etcd_version: v3.4.10
 
-- name: configure services
-  template:
-    src: service.conf.j2
-    dest: "/lib/systemd/system/etcd.service"
-  register: result
+- name: configure etcd service
+  include: service.yml
 
-- name: reload daemon
-  command: systemctl daemon-reload
-  when: result.changed
-  notify: restart etcd
+- name: configures etcd certs
+  include: ca-cert.yml
+  when: inventory_hostname == etcd_config_host
 
-- include_tasks: config.yml
+- name: configures etcd
+  include: config.yml
 
-- name: ensure etcd service started and enabled
+- name: ensure etcd service enabled and started
   service:
     name: etcd
     enabled: yes

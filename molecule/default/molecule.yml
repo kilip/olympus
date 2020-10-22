@@ -4,24 +4,45 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: molecule-olympus
-    hostname: molecule-olympus
-    groups:
-    - k3s_nodes
+  - name: hera-dev
+    hostname: hera-dev
     image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
     pre_build_image: true
     privileged: true
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups: ["master", "etcd"]
+  - name: aion-dev
+    hostname: aion-dev
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
+    pre_build_image: true
+    privileged: true
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups: ["master", "etcd"]
+  - name: mars-dev
+    hostname: mars-dev
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
+    pre_build_image: true
+    privileged: true
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups: ["master", "etcd"]
+
 provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: "../../roles"
     MOLECULE_NO_LOG: false
   inventory:
-    host_vars:
-      molecule-olympus:
-        ansible_host: "127.0.0.1"
+    links:
+      #hosts: "./inventory/hosts.ini"
+      group_vars: "./inventory/group_vars"
+      host_vars: "./inventory/host_vars"
+  playbooks:
+    converge: "../../playbook-converge.yml"
 verifier:
   name: ansible

@@ -1,0 +1,19 @@
+- name: ensure required variables configured
+  assert:
+    that: "{{ item }} is defined"
+  with_items:
+    - etcd_config_host
+
+- name: gather all masters ip address
+  set_fact:
+    _etcd_endpoints: "{{ _etcd_endpoints + [ item ~ '=https://' ~ hostvars[item]['ansible_default_ipv4']['address'] ~ ':2380'] }}"
+  with_items: "{{ groups['master'] }}"
+    
+- set_fact:
+    etcd_initial_cluster: "{{ _etcd_endpoints | join(',') }}"
+    _etcd_config_host_ip: "{{ hostvars[etcd_config_host]['ansible_default_ipv4']['address'] }}"
+
+- name: ensure cert dir exists
+  file: 
+    path: "{{ _etcd_cert_dir }}"
+    state: directory
