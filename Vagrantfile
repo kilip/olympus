@@ -12,7 +12,7 @@ cpus = case RbConfig::CONFIG["host_os"]
   else 2
 end
 
-NODES_NUM = 3
+NODES_NUM = 2
 IP_BASE ="10.0.60."
 IP_GATEWAY="10.0.60.1"
 NET_IFACE = "eno1"

@@ -5,13 +5,17 @@ cfssljson_url: "https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64"
 cfssl_bin: "/usr/local/bin/cfssl"
 cfssljson_bin: "/usr/local/bin/cfssljson"
 
-cert_path: "/etc/etcd"
-cert_temp: "/tmp/etcd"
+#cert_path: "/etc/etcd"
+#cert_temp: "/tmp/etcd"
+
+etcd_conf_dir: "/etc/etcd"
+etcd_data_dir: "/var/lib/etcd"
+etcd_temp_dir: "/tmp/etcd"
 
 etcd_host_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
 etcd_initial_cluster: ""
 etcd_cert_local_temp_dir: "/tmp/etcd-cert"
 
 
-_etcd_cert_dir: "/etc/etcd/cert"
+_etcd_cert_dir: "{{ etcd_conf_dir }}/cert"
 _etcd_endpoints: []

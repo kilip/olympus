@@ -1,7 +1,7 @@
 - name: copy cert files to etcd nodes
   copy:
     src: "{{ etcd_cert_local_temp_dir }}/{{ item.src }}"
-    dest: "{{ cert_path }}/{{ item.dest }}"
+    dest: "{{ etcd_conf_dir }}/{{ item.dest }}"
   with_items:
     - src: "ca.pem"
       dest: "etcd-ca.crt"
@@ -12,14 +12,13 @@
 
 - name: ensure access to server.key file
   file:
-    path: "/etc/etcd/server.key"
+    path: "{{ etcd_conf_dir }}/server.key"
     mode: "0600"
 
-  
 - debug: var=etcd_initial_cluster
 
 - name: generate etcd config
   template:
     src: "etcd.conf.j2"
-    dest: "/etc/etcd/etcd.conf"
+    dest: "{{ etcd_conf_dir }}/etcd.conf"
   notify: restart etcd

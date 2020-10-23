@@ -1,9 +1,0 @@
-- name: ensure etcd service installed
-  template:
-    src: "etcd.service.j2"
-    dest: "/lib/systemd/system/etcd.service"
-  register: stat
-
-- name: trigger daemon reload
-  command: "systemctl daemon-reload"
-  when: stat.changed
