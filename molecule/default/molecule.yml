@@ -44,5 +44,7 @@ provisioner:
       host_vars: "./inventory/host_vars"
   playbooks:
     converge: "../../playbook-converge.yml"
+    #converge: "../../.scratches/debug.yml"
+    verify: "../../playbook-verify.yml"
 verifier:
   name: ansible

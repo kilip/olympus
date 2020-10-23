@@ -4,3 +4,10 @@
     name: etcd
     enabled: yes
     state: restarted
+
+- name: start etcd
+  systemd:
+    daemon_reload: yes
+    name: etcd
+    enabled: yes
+    state: started

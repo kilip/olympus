@@ -1,0 +1,49 @@
+- name: ensure that etcd service started
+  assert:
+    that: services['etcd.service']['state'] == 'running'
+- name: test put etcd data
+  command:  |
+    etcdctl --endpoints https://{{ host_ip }}:2379 \
+    --cert /etc/etcd/server.crt \
+    --cacert /etc/etcd/etcd-ca.crt \
+    --key /etc/etcd/server.key \
+    put foo bar
+  changed_when: false
+- name: check inserted data
+  command: |
+    etcdctl --endpoints https://{{ host_ip }}:2379 \
+    --cert /etc/etcd/server.crt \
+    --cacert /etc/etcd/etcd-ca.crt \
+    --key /etc/etcd/server.key get foo
+  register: r
+  changed_when: false
+- assert:
+    that: '"foo" in r.stdout_lines and "bar" in r.stdout'
+
+- name: check health
+  block:
+    - name: get health
+      command: |
+        curl --cacert /etc/etcd/etcd-ca.crt \
+        --cert /etc/etcd/server.crt \
+        --key /etc/etcd/server.key \
+        https://{{ host_ip }}:2379/health
+      register: r
+      changed_when: false
+    - assert:
+        that: '"{\"health\":\"true\"}" in r.stdout'
+
+- name: check etcd cluster member
+  block:
+    - name: get member list
+      command: |
+        etcdctl --endpoints https://{{ host_ip }}:2379 \
+        --cert /etc/etcd/server.crt \
+        --cacert /etc/etcd/etcd-ca.crt \
+        --key /etc/etcd/server.key member list
+      register: r
+      changed_when: false
+    - assert:
+        that: '"{{ item }}" in r.stdout'
+      with_items: "{{ groups['etcd'] }}"
+  when: inventory_hostname == etcd_config_host

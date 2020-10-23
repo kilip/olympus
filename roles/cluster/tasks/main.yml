@@ -3,12 +3,13 @@
     path: "{{ resolv_conf_path }}"
   register: result
 
+- debug: var=result
 - name: "fix resolv.conf file"
   shell: "ln -sfn {{ resolv_conf_path }} /etc/resolv.conf"
   args:
     warn: no
   changed_when: false
-  when: result.stat.exists
+  when: not molecule_is_test
 
 - name: "configures netplan"
   copy:

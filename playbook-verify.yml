@@ -1,0 +1,15 @@
+---
+- name: Verify
+  hosts: all
+  pre_tasks:
+    - service_facts:
+      register: _fsvc
+    - set_fact:
+        services: "{{ _fsvc.ansible_facts.services }}"
+        host_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+  tasks:
+    - name: verify etcd
+      include_role:
+        name: etcd
+        tasks_from: verify.yml
+      when: '"etcd" in groups'

@@ -15,10 +15,8 @@
     path: "{{ etcd_conf_dir }}/server.key"
     mode: "0600"
 
-- debug: var=etcd_initial_cluster
-
 - name: generate etcd config
   template:
     src: "etcd.conf.j2"
     dest: "{{ etcd_conf_dir }}/etcd.conf"
-  notify: restart etcd
+  notify: "{{ _etcd_handler }}"
