@@ -19,6 +19,7 @@ tasks:
     - pip install wheel
     - pip install -r requirements.txt
     - ansible-galaxy install -r galaxy.yml
+    - git submodule update --init --recursive
 
   create-config:
     desc: create new inventory
@@ -38,7 +39,7 @@ tasks:
   cleanup:
     desc: remove k3s installation from all nodes
     cmds:
-    - "{{.playbook}} -K ./playbook-cleanup.yml"
+    - "{{.playbook}} -K -b ./playbook-cleanup.yml"
 
   reboot:
     desc: reboot all cluster nodes

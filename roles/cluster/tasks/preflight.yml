@@ -4,6 +4,8 @@
     fail_msg: "'{{ item }}' value should be configured"
   with_items:
   - k3s_control_node_address
+  - etcd_conf_dir
+  - etcd_data_dir
 
 - name: generate etcd cluster endpoints
   set_fact:

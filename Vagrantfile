@@ -21,15 +21,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
 
   (1..NODES_NUM).each do |i|
-    HOST_INDEX=i+10
-    config.vm.define "k8s-node-#{HOST_INDEX}" do |config|
+    config.vm.define "k8s-node-#{i + 10}" do |config|
 
       hostname = "k8s-node-#{i + 10}"
 
       memory = 2048
 
       config.vm.box = "bento/ubuntu-20.04"
-      config.vm.network "public_network", ip: "#{IP_BASE}#{HOST_INDEX}", bridge: "#{NET_IFACE}"
+      config.vm.network "public_network", ip: "#{IP_BASE}#{i + 10}", bridge: "#{NET_IFACE}"
       config.vm.hostname = hostname
       config.vm.provider "virtualbox"
       config.vm.provider :virtualbox do |v|
@@ -56,9 +55,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         run: "always",
         inline: "ip route add default via #{IP_GATEWAY}"
       
-      config.vm.provision "shell",
-        run: "always",
-        inline: "route del -net 0.0.0.0 gw 192.168.178.1 netmask 0.0.0.0 dev eth0"
     end
   end
 end

@@ -18,6 +18,7 @@
         update_cache: yes
         cache_valid_time: 600
       when: ansible_os_family == 'Debian'
+      changed_when: false
       
 - name: converge proxy hosts
   hosts: proxy
@@ -35,6 +36,9 @@
 
 - hosts: "k3s_nodes"
   become: true
+  vars:
+    k3s_cluster_state: installed
+    k3s_become_for_all: true
   tasks:
     - name: include preflight tasks
       include_role: 
