@@ -3,3 +3,4 @@ venv
 .secrets
 kubeconfig
 .vagrant
+*.vdi

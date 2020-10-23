@@ -1,15 +1,28 @@
-- name: get resolv.conf stat
-  stat:
-    path: "{{ resolv_conf_path }}"
-  register: result
+#- name: get resolv.conf stat
+#  stat:
+#    path: "{{ resolv_conf_path }}"
+#  register: result
 
-- debug: var=result
-- name: "fix resolv.conf file"
-  shell: "ln -sfn {{ resolv_conf_path }} /etc/resolv.conf"
-  args:
-    warn: no
-  changed_when: false
-  when: not molecule_is_test
+#- name: "fix resolv.conf file"
+#  shell: "ln -sfn {{ resolv_conf_path }} /etc/resolv.conf"
+#  args:
+#    warn: no
+#  changed_when: false
+#  when: not molecule_is_test
+
+- name: ensure package open iscsi installed
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - open-iscsi
+    - zfsutils-linux
+
+- name: ensure iscsid service started
+  service:
+    name: iscsid
+    enabled: yes
+    state: started
 
 - name: "configures netplan"
   copy:

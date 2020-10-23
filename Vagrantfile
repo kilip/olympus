@@ -12,7 +12,7 @@ cpus = case RbConfig::CONFIG["host_os"]
   else 2
 end
 
-NODES_NUM = 2
+NODES_NUM = 3
 IP_BASE ="10.0.60."
 IP_GATEWAY="10.0.60.1"
 NET_IFACE = "eno1"
@@ -43,6 +43,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           '--audio', 'none',
           "--uartmode1", "file", File::NULL,
         ]
+
+        # Create a block device for Longhorn on the worker nodes
+        if hostname != "k8s-node-11"
+          disk = "./"+hostname+"-block.vdi"
+          unless File.exist?(disk)
+            v.customize [
+              "createhd",
+              "--filename", disk,
+              "--variant", "Fixed",
+              "--size", 1024*5
+            ]
+          end
+          v.customize [
+            "storageattach", :id,
+            "--storagectl", "SATA Controller",
+            "--port", 2,
+            "--device", 0,
+            "--type", "hdd",
+            "--medium", disk
+          ]
+        end
       end
 
       # delete default gw on eth0

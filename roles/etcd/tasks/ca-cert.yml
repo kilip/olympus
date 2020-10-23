@@ -1,8 +1,3 @@
-- name: ensure rsync installed
-  package:
-    name: rsync
-    state: present
-
 - name: ensure cfssl installed
   get_url:
     url: "{{ cfssl_url }}"
