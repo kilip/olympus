@@ -1,7 +1,7 @@
 - service_facts:
   register: facts
 - set_fact:
-    _etcd_service: "{{ facts.ansible_facts.services['etcd.service']['state'] }}"
+    _etcd_service: "{{ facts.ansible_facts.services['etcd.service']['state'] | default('undefined') }}"
 - set_fact:
     _etcd_handler: "{{ 'restart etcd' if _etcd_service == 'running' else 'start etcd' }}"
 
@@ -17,12 +17,7 @@
   template:
     src: "etcd.service.j2"
     dest: "/lib/systemd/system/etcd.service"
-
-- name: ensure etcd service enabled and started
-  service:
-    name: etcd
-    enabled: yes
-    state: started
+  notify: "{{ _etcd_handler }}"
 
 - name: configures etcd
   include: config.yml
