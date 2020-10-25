@@ -13,10 +13,10 @@ jobs:
     strategy:
       matrix:
         scenario:
-          - scenario: default
-          - scenario: cluster
-        include:
-        - distro: ubuntu:20.04
+          - default
+          - cluster
+        distro: 
+          - ubuntu:20.04
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v2
