@@ -14,8 +14,10 @@ env:
 
 install:
   # Install test dependencies.
+  - touch .env
   - task deps
 
 script:
   # Run tests.
   - molecule test
+  - molecule test -s cluster
