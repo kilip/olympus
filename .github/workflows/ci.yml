@@ -17,6 +17,10 @@ jobs:
           - cluster
         distro: 
           - ubuntu:20.04
+          - ubuntu:18.04
+          - debian:10
+          - debian:9
+          
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v2
