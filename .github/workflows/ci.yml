@@ -7,14 +7,16 @@ on:
     branches: [master]
 
 jobs:
-  test:
-    name: Molecule (${{matrix.distro}}-${{matrix.version}})
+  nodes:
+    name: "Scenario: ${{ matrix.scenario }} (${{matrix.distro}})"
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        scenario:
+          - scenario: default
+          - scenario: cluster
         include:
-        - distro: ubuntu
-          version: 20.04
+        - distro: ubuntu:20.04
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v2
@@ -30,9 +32,8 @@ jobs:
           ansible-galaxy install -r galaxy.yml
 
       - name: Run Molecule tests.
-        run: molecule test
+        run: molecule test -s ${{ matrix.scenario }}
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DIST: ${{ matrix.distro }}
-          MOLECULE_DIST_VERSION: ${{ matrix.version }}
