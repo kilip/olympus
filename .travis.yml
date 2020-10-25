@@ -1,0 +1,21 @@
+---
+dist: focal
+addons:
+  snaps:
+    - name: task
+      confinement: classic
+
+language: python
+services: docker
+
+env:
+  matrix:
+    - MOLECULE_DISTRO: ubuntu:20.04
+
+install:
+  # Install test dependencies.
+  - task deps
+
+script:
+  # Run tests.
+  - molecule test
