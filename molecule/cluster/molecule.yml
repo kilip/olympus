@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: k8s-node1
-    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu:20.04}"
     pre_build_image: true
     privileged: true
     command: ${MOLECULE_DOCKER_COMMAND:-""}
@@ -15,7 +15,7 @@ platforms:
       - master
       - mysql
   - name: k8s-node2
-    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu:20.04}"
     pre_build_image: true
     privileged: true
     command: ${MOLECULE_DOCKER_COMMAND:-""}
@@ -24,7 +24,7 @@ platforms:
     groups:
       - master
   - name: k8s-node3
-    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu:20.04}"
     pre_build_image: true
     privileged: true
     command: ${MOLECULE_DOCKER_COMMAND:-""}
