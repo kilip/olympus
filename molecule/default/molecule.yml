@@ -12,7 +12,7 @@ platforms:
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    groups: ["master", "etcd", "proxy", "k3s_nodes"]
+    groups: ["master", "proxy", "mysql", "etcd", "k3s_cluster"]
   - name: aion-dev
     hostname: aion-dev
     image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
@@ -21,7 +21,7 @@ platforms:
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    groups: ["master", "etcd", "k3s_nodes"]
+    groups: ["master", "etcd", "k3s_cluster"]
   - name: mars-dev
     hostname: mars-dev
     image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
@@ -30,13 +30,14 @@ platforms:
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    groups: ["master", "etcd", "k3s_nodes"]
+    groups: ["master","etcd", "k3s_cluster"]
 
 provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: "../../roles"
     MOLECULE_NO_LOG: false
+    K3S_DOWNLOAD_URL: "${K3S_DOWNLOAD_URL:-https://github.com/rancher/k3s/releases/download}"
   inventory:
     links:
       #hosts: "./inventory/hosts.ini"

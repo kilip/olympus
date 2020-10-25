@@ -1,53 +1,22 @@
-#- name: get resolv.conf stat
-#  stat:
-#    path: "{{ resolv_conf_path }}"
-#  register: result
-
-#- name: "fix resolv.conf file"
-#  shell: "ln -sfn {{ resolv_conf_path }} /etc/resolv.conf"
-#  args:
-#    warn: no
-#  changed_when: false
-#  when: not molecule_is_test
-
-- name: ensure package open iscsi installed
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - open-iscsi
-    - zfsutils-linux
-
-- name: ensure iscsid service started
-  service:
-    name: iscsid
-    enabled: yes
-    state: started
-
-- name: "configures netplan"
-  copy:
-    content: "{{ netplan_config }}"
-    dest: "/etc/netplan/50-cloud-init.yaml"
-    backup: yes
-  register: result
-  when: netplan_config is defined
-
-- name: "apply netplan changes"
-  shell: "netplan apply --debug"
-  when: result.changed
-
-- name: "configures etcd certs"
-  set_fact:
-    k3s_datastore_cafile: "{{ etcd_conf_dir }}/etcd-ca.crt"
-    k3s_datastore_certfile: "{{ etcd_conf_dir }}/server.crt"
-    k3s_datastore_keyfile: "{{ etcd_conf_dir }}/server.key"
-  when: "'etcd' in groups"
-
-- name: "set control node to true"
-  set_fact:
-    k3s_control_node: true
-  when: "'master' in groups"
-
-- name: "include k3s role"
+- name: include prerequisite role
   include_role:
-    name: xanmanning.k3s
+    name: "./vendor/k3s-ansible/roles/prereq"
+
+- name: downloading k3s
+  include: download.yml
+
+- include: control-node.yml
+  when: k3s_control_node == inventory_hostname
+
+- name: Store Master node-token
+  block:
+    - set_fact:
+        cluster_token: "{{ hostvars[groups['master'][0]]['token'] }}"
+    - set_fact:
+        extra_server_args: "{{ extra_server_args + ['--token \"' ~ cluster_token ~ '\"']}}"
+
+- include: k3s-master.yml
+  when: "k3s_control_node !== inventory_hostname and 'master' in groups"
+
+#- include: k3s-master.yml
+#  when: "'master' in groups"

@@ -20,21 +20,28 @@
       when: ansible_os_family == 'Debian'
       changed_when: false
       
-- name: converge proxy hosts
-  hosts: proxy
-  tasks:
-    - name: include kilip.squid role
-      include_role:
-        name: "kilip.squid"
+#- name: converge proxy hosts
+#  hosts: proxy
+#  tasks:
+#    - name: include kilip.squid role
+#      include_role:
+#        name: "kilip.squid"
 
-- hosts: etcd
-  become: true
-  tasks:
-    - name: installs/configures etcd
-      include_role:
-        name: etcd
+#- hosts: etcd
+#  become: true
+#  tasks:
+#    - name: installs/configures etcd
+#      include_role:
+#        name: etcd
 
-- hosts: "k3s_nodes"
+#- hosts: mysql
+#  become: true
+#  tasks:
+#    - name: installs/configures mysql
+#      include_role:
+#        name: mysql
+
+- hosts: "k3s_cluster"
   become: true
   vars:
     k3s_cluster_state: installed

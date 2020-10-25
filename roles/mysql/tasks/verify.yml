@@ -1,0 +1,9 @@
+- name: assert mysql service
+  block:
+    - service_facts:
+      register: f
+    - debug: var=f
+    - set_fact:
+        s: '{{ f.ansible_facts.services["mysql.service"] }}'
+    - assert:
+        that: s.state == 'running'

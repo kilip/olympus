@@ -1,0 +1,3 @@
+- name: include geerlingguy mysql
+  include_role:
+    name: geerlingguy.mysql

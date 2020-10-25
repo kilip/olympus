@@ -2,5 +2,6 @@ roles:
   - andrewrothstein.etcd
   - xanmanning.k3s
   - kilip.squid
+  - geerlingguy.mysql
 collections:
   - community.kubernetes
