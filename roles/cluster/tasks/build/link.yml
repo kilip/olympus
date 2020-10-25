@@ -1,7 +1,3 @@
----
-- name: configure service
-  include: service.yml
-
 - name: Create kubectl symlink
   file:
     src: /usr/local/bin/k3s
@@ -13,6 +9,3 @@
     src: /usr/local/bin/k3s
     dest: /usr/local/bin/crictl
     state: link
-
-- include: kubeconfig.yml
-  when: ansible_user is defined

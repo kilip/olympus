@@ -3,5 +3,6 @@ k3s_download_url: "{{ lookup('env', 'K3S_DOWNLOAD_URL') | default('https://githu
 systemd_dir: "/lib/systemd/system"
 
 k3s_cluster_token: null
+k3s_https_port: 6443
 
 extra_server_args: []

@@ -1,6 +1,6 @@
 ---
 - name: Verify
-  hosts: etcd
+  hosts: all
   pre_tasks:
     - service_facts:
       register: _fsvc
@@ -12,11 +12,9 @@
       include_role:
         name: etcd
         tasks_from: verify.yml
-      when: '"etcd" in groups'
-  
-- hosts: mysql
-  tasks:
+      when: '"etcd" in group_names'
     - name: verify mysql
       include_role:
         name: mysql
         tasks_from: verify.yml
+      when: '"mysql" in group_names'

@@ -4,7 +4,7 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: olympus-node
+  - name: k8s-node1
     image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
     pre_build_image: true
     privileged: true
@@ -12,8 +12,26 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
-      - proxy
+      - master
       - mysql
+  - name: k8s-node2
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
+    pre_build_image: true
+    privileged: true
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - master
+  - name: k8s-node3
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
+    pre_build_image: true
+    privileged: true
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - master
 
 provisioner:
   name: ansible
@@ -23,12 +41,10 @@ provisioner:
     K3S_DOWNLOAD_URL: "${K3S_DOWNLOAD_URL:-https://github.com/rancher/k3s/releases/download}"
   inventory:
     links:
-      #hosts: "./inventory/hosts.ini"
       group_vars: "./inventory/group_vars"
       host_vars: "./inventory/host_vars"
   playbooks:
     converge: "../../playbook-converge.yml"
-    #converge: "../../.scratches/debug.yml"
     verify: "../../playbook-verify.yml"
 verifier:
   name: ansible

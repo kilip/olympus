@@ -1,0 +1,17 @@
+- name: gather facts
+  block:
+    - name: gather service facts
+      service_facts:
+      register: s
+
+    - name: set common facts
+      set_fact:
+        services: "{{ s.ansible_facts.services }}"
+        host_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+
+- name: "update cache"
+  apt:
+    update_cache: yes
+    cache_valid_time: 600
+  when: ansible_os_family == 'Debian'
+  changed_when: false

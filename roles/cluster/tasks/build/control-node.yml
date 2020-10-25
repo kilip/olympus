@@ -25,10 +25,25 @@
 
 - name: Store Master node-token
   set_fact:
-    token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
+    #token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
+    token: "{{ node_token.content }}"
 
 - name: Restore node-token file access
   file:
     path: /var/lib/rancher/k3s/server
     mode: "{{ p.stat.mode }}"
   changed_when: false
+
+- name: Wait for control plane to be ready to accept connections
+  wait_for:
+    port: "{{ k3s_https_port }}"
+    host: "{{ k3s_bind_address | default('127.0.0.1') }}"
+    delay: 5
+    sleep: 5
+    timeout: 300
+
+- name: create link
+  include: link.yml
+
+- include: kubeconfig.yml
+  when: ansible_user is defined

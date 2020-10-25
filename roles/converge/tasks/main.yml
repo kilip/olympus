@@ -1,0 +1,18 @@
+---
+- name: Preflight Check
+  include: preflight.yml
+
+- name: install/configures proxy nodes
+  include_role:
+    name: "kilip.squid"
+  when: '"proxy" in group_names'
+
+- name: install/configures mysql server
+  include_role:
+    name: mysql
+  when: '"mysql" in group_names'
+
+- name: configures master node
+  include_role:
+    name: cluster
+  when: '"master" in group_names or "node" in group_names'

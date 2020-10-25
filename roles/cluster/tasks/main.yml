@@ -2,21 +2,25 @@
   include_role:
     name: "./vendor/k3s-ansible/roles/prereq"
 
+- name: set control node
+  set_fact:
+    control_node: "{{ groups['master'][0] }}"
+
 - name: downloading k3s
   include: download.yml
 
-- include: control-node.yml
-  when: k3s_control_node == inventory_hostname
-
 - name: Store Master node-token
   block:
-    - set_fact:
-        cluster_token: "{{ hostvars[groups['master'][0]]['token'] }}"
-    - set_fact:
+    - name: install/configures control node
+      include: build/control-node.yml
+      when: control_node == inventory_hostname
+    - name: set cluster token
+      set_fact:
+        cluster_token: "{{ hostvars[control_node]['token'] }}"
+    - name: set extra server args
+      set_fact:
         extra_server_args: "{{ extra_server_args + ['--token \"' ~ cluster_token ~ '\"']}}"
-
-- include: k3s-master.yml
-  when: "k3s_control_node !== inventory_hostname and 'master' in groups"
-
-#- include: k3s-master.yml
-#  when: "'master' in groups"
+    - name: build secondary master
+      include: build/master-node.yml
+      when: "control_node != inventory_hostname"
+  when: '"master" in group_names'

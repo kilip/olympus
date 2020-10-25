@@ -52,6 +52,19 @@ tasks:
     - "scp {{.server}}:/etc/rancher/k3s/k3s.yaml kubeconfig"
     - "sed -i 's|127.0.0.1|{{.server}}|g' kubeconfig"
 
+  test-default:
+    desc: molecule default scenario testing
+    cmds:
+    - molecule converge
+    - molecule idempotence
+
+  test-cluster:
+    desc: molecule cluster scenario testing
+    cmds:
+    - molecule converge -s cluster
+    - molecule idempotence -s cluster
+    - molecule verify -s cluster
+
   dev-sync-sample:
     desc: sync sample files
     cmds:
