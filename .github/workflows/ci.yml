@@ -36,7 +36,9 @@ jobs:
           ansible-galaxy install -r galaxy.yml
 
       - name: Run Molecule tests.
-        run: molecule test -s ${{ matrix.scenario }}
+        run: |
+          molecule converge -s ${{ matrix.scenario }}
+          molecule verify -s ${{ matrix.scenario }}
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
