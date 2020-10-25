@@ -4,9 +4,17 @@
     daemon_reload: yes
     state: started
     enabled: yes
-
+  register: ensure_secondary_masters_started
+  until: ensure_secondary_masters_started is succeeded
+  retries: "{{ play_hosts | length }}"
+  delay: 5
+  
 - name: restart k3s
   systemd:
     name: k3s
     daemon_reload: yes
     state: restarted
+  register: ensure_secondary_masters_started
+  until: ensure_secondary_masters_started is succeeded
+  retries: "{{ play_hosts | length }}"
+  delay: 5

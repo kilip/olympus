@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: olympus-node
-    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu}:${MOLECULE_DIST_VERSION:-20.04}"
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu:20.04}"
     pre_build_image: true
     privileged: true
     command: ${MOLECULE_DOCKER_COMMAND:-""}

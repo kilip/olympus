@@ -10,8 +10,10 @@ services: docker
 
 env:
   matrix:
-    - MOLECULE_DIST: ubuntu
-      MOLECULE_DIST_VERSION: 20.04
+    - MOLECULE_DIST: ubuntu:20.04
+    - MOLECULE_DIST: centos:8
+  allow_failures:
+    - MOLECULE_DIST: centos:8
 
 install:
   # Install test dependencies.
