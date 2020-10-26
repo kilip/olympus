@@ -1,0 +1,2 @@
+- name: configures worker service
+  include: service.yml

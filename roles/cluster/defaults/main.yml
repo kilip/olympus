@@ -1,8 +1,12 @@
-k3s_version: "v1.19.2+k3s1"
+---
 k3s_download_url: "{{ lookup('env', 'K3S_DOWNLOAD_URL') | default('https://github.com/rancher/k3s/releases/download') }}"
+k3s_version: "v1.18.10+k3s1"
+k3s_https_port: "6443"
 systemd_dir: "/lib/systemd/system"
-
-k3s_cluster_token: null
-k3s_https_port: 6443
+master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
+service_name: "{{ 'k3s' if 'master' in group_names else 'k3s-node' }}"
+service_file: "{{ 'k3s.service' if 'master' in group_names else 'k3s-node.service' }}"
+service_template: "{{ 'master.service.j2' if 'master' in group_names else 'worker.service.j2' }}"
 
 extra_server_args: []
+extra_agent_args: []

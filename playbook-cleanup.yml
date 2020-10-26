@@ -1,9 +1,8 @@
-- hosts: k3s_nodes
+- hosts: all
   name: cleanup k3s installation
-  vars:
-    k3s_cluster_state: uninstalled
-    k3s_become_for_all: true
   tasks:
-    - name: "include k3s role"
+    - name: "include cluster role"
       include_role:
-        name: xanmanning.k3s
+        name: cluster
+        tasks_from: "cleanup.yml"
+      when: '"master" in group_names or "worker" in group_names'

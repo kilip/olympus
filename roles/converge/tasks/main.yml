@@ -12,7 +12,7 @@
     name: mysql
   when: '"mysql" in group_names'
 
-- name: configures master node
+- name: install/configures k8s master and worker nodes
   include_role:
     name: cluster
-  when: '"master" in group_names or "node" in group_names'
+  when: '"master" in group_names or "worker" in group_names'

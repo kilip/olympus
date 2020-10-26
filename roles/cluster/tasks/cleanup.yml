@@ -1,0 +1,2 @@
+- name: include reset tasks
+  include: reset/main.yml

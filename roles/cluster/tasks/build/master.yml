@@ -25,8 +25,8 @@
 
 - name: Store Master node-token
   set_fact:
-    #token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
-    token: "{{ node_token.content }}"
+    token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
+    #token: "{{ node_token.content }}"
 
 - name: Restore node-token file access
   file:
@@ -34,7 +34,7 @@
     mode: "{{ p.stat.mode }}"
   changed_when: false
 
-- name: Wait for control plane to be ready to accept connections
+- name: Wait for master to be ready to accept connections
   wait_for:
     port: "{{ k3s_https_port }}"
     host: "{{ k3s_bind_address | default('127.0.0.1') }}"

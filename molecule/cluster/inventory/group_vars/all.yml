@@ -1,14 +1,5 @@
-etcd_config_host: "hera-dev"
-etcd_conf_dir: "/etc/etcd"
-etcd_data_dir: "/var/lib/etcd"
-
-# k3s configuration
-mysql_server_ip: "{{ hostvars['k8s-node1']['host_ip'] }}"
 extra_server_args:
-  - --tls-san k3s.itstoni.com
-  - --datastore-endpoint "mysql://olympus:olympus@tcp({{ mysql_server_ip }}:3306)/olympus"
   - --no-deploy traefik
   - --no-deploy servicelb
   - --no-deploy metrics-server
-  - --no-deploy local-storage
   - --flannel-backend host-gw

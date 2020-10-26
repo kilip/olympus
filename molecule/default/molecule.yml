@@ -29,6 +29,6 @@ provisioner:
   playbooks:
     converge: "../../playbook-converge.yml"
     #converge: "../../.scratches/debug.yml"
-    verify: "../../playbook-verify.yml"
+    verify: "../../playbook-verify.yml"    
 verifier:
   name: ansible
