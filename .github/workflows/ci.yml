@@ -8,10 +8,9 @@ on:
 
 jobs:
   nodes:
-    name: "CI (${{matrix.distro}})"
-    runs-on: ubuntu-latest
     strategy:
       matrix:
+        include:
         - distro: ubuntu:20.04
     steps:
       - name: Check out the codebase.

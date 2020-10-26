@@ -2,4 +2,4 @@ extra_server_args:
   - --no-deploy traefik
   - --no-deploy servicelb
   - --no-deploy metrics-server
-  - --flannel-backend host-gw
+  - --flannel-backend="host-gw"
