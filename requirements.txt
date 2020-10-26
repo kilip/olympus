@@ -1,0 +1,10 @@
+ansible
+molecule
+molecule[lint]
+molecule-docker
+docker
+kubernetes
+openshift
+python-vagrant
+passlib
+jmespath >= 0.9.0

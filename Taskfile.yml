@@ -1,0 +1,36 @@
+  
+version: "3"
+
+dotenv: ['.env']
+
+vars:
+  ansible: "ansible -i ${INVENTORY}"
+  playbook: "ansible-playbook -i ${INVENTORY}"
+
+tasks:
+  pyenv:
+    desc: build python3 virtual environment
+    cmds:
+    - python3 -m venv venv
+
+  deps:
+    desc: build python and ansible dependencies
+    cmds:
+    - pip install --upgrade pip
+    - pip install wheel
+    - pip install -r requirements.txt
+  
+  converge:
+    desc: converge cluster
+    cmds:
+      - "{{.playbook}} -K site.yml"
+
+  reset:
+    desc: reset cluster
+    cmds:
+      - "{{.playbook}} -K reset.yml"
+
+  reboot:
+    desc: reboot all cluster nodes
+    cmds:
+    - "{{.ansible}} -K -b -a 'reboot' k3s_cluster"
