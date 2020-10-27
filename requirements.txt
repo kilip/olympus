@@ -3,7 +3,7 @@ molecule
 molecule[lint]
 molecule-docker
 docker
-kubernetes
+kubernetes ~=11.0.0
 openshift
 python-vagrant
 passlib
