@@ -1,0 +1,12 @@
+k3s_download_url: "https://files.itstoni.com/k3s"
+k3s_version: v1.19.2+k3s1
+ansible_user: toni
+extra_server_args:
+  - --write-kubeconfig-mode 644
+  - --tls-san 10.0.10.12
+  - --node-external-ip 10.0.10.12
+  - --no-deploy traefik
+  - --no-deploy servicelb
+  - --no-deploy metrics-server
+  - --no-deploy local-storage
+  - --flannel-backend "host-gw"

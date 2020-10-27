@@ -1,4 +1,9 @@
 ---
+- name: set k3s download url
+  set_fact:
+    k3s_download_url: "{{ k3s_default_download_url }}"
+  when: k3s_download_url is not defined
+
 - name: Download k3s binary x64
   get_url:
     url: "{{ k3s_download_url }}/{{ k3s_version }}/k3s"

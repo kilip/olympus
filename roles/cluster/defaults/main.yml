@@ -1,5 +1,5 @@
 ---
-k3s_download_url: "{{ lookup('env', 'K3S_DOWNLOAD_URL') | default('https://github.com/rancher/k3s/releases/download') }}"
+k3s_default_download_url: "https://github.com/rancher/k3s/releases/download"
 k3s_version: "v1.18.10+k3s1"
 k3s_https_port: "6443"
 systemd_dir: "/lib/systemd/system"
