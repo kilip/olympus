@@ -43,5 +43,5 @@ jobs:
           ANSIBLE_VAULT_PASSWORD_FILE: "/tmp/vault/password"
         run: |
           mkdir -p vault
-          echo "$env:VAULT_PASSWORD" > vault/password
+          echo "${VAULT_PASSWORD}" > vault/password
           molecule test -s "${SCENARIO}"
