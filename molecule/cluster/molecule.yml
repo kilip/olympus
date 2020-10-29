@@ -46,6 +46,7 @@ provisioner:
     ANSIBLE_ROLES_PATH: "../../roles"
     MOLECULE_NO_LOG: false
     K3S_DOWNLOAD_URL: "${K3S_DOWNLOAD_URL:-https://github.com/rancher/k3s/releases/download}"
+    ANSIBLE_VAULT_PASSWORD_FILE: "${ANSIBLE_VAULT_PASSWORD_FILE:-../../vault/password}"
   inventory:
     links:
       group_vars: "./inventory/group_vars"

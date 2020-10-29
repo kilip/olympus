@@ -30,14 +30,14 @@ jobs:
       - name: Install test dependencies.
         run: |
           pip3 install -r requirements.txt
-          ansible-galaxy install -r galaxy.yml
+          ansible-galaxy install -r galaxy.yml --ignore-errors
         continue-on-error: true
 
       - name: Run Molecule tests.
         run: |
           mkdir -p vault
-          echo "$env:VAULT_PASSWORD" >> ./vault/password
-          ls -l vault
+          echo "$env:VAULT_PASSWORD" > "$env:ANSIBLE_VAULT_PASSWORD_FILE"
+          cat ./vault/password
           molecule test -s "${SCENARIO}"
         env:
           PY_COLORS: '1'
