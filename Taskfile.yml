@@ -3,8 +3,9 @@ version: "3"
 dotenv: ['.env']
 
 vars:
-  ansible: "ansible -i ${INVENTORY}"
-  playbook: "ansible-playbook -i ${INVENTORY}"
+  ansible: "./venv/bin/ansible -i ${INVENTORY}"
+  playbook: "./venv/bin/ansible-playbook -i ${INVENTORY}"
+  molecule: "./venv/bin/molecule"
 
 tasks:
   pyenv:
@@ -61,7 +62,7 @@ tasks:
   test-cluster:
     desc: molecule cluster scenario testing
     cmds:
-    - molecule converge -s cluster
+    - "molecule converge -s cluster"
     - molecule idempotence -s cluster
     - molecule verify -s cluster
 
