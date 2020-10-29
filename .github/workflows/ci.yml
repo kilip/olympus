@@ -28,8 +28,7 @@ jobs:
           ansible-galaxy install -r galaxy.yml
           mkdir -p vault
           echo "$env:VAULT_PASSWORD" >> ./vault/password
-
-        with:
+        env:
           VAULT_PASSWORD: ${{ secrets.SuperSecret }}
       - name: Run Molecule tests.
         run: molecule test
