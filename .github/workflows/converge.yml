@@ -1,4 +1,4 @@
-name: CI
+name: Converge
 
 on:
   push:
@@ -8,13 +8,15 @@ on:
 
 jobs:
   converge:
-    name: "${{ matrix.scenario }} (${{matrix.distro}})"
+    name: "Scenario: ${{ matrix.scenario }} (${{matrix.distro}})"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
         - distro: ubuntu:20.04
           scenario: default
+        - distro: ubuntu:20.04
+          scenario: cluster
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v2
@@ -39,4 +41,4 @@ jobs:
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DIST: ${{ matrix.distro }}
           SCENARIO: ${{ matrix.scenario }}
-          VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
+          ANSIBLE_VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
