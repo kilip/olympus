@@ -1,4 +1,4 @@
-name: Nodes Build
+name: MetalCI
 
 on:
   push:
