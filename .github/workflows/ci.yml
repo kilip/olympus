@@ -9,6 +9,7 @@ on:
 jobs:
   nodes:
     strategy:
+      runs-on: ubuntu-latest
       matrix:
         include:
         - distro: ubuntu:20.04
