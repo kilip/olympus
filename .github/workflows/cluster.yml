@@ -38,4 +38,4 @@ jobs:
         run: |
           mkdir -p vault
           echo "${VAULT_PASSWORD}" > vault/password
-          molecule test -s "${SCENARIO}"
+          molecule test -s cluster
