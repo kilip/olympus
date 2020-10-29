@@ -8,11 +8,13 @@ on:
 
 jobs:
   nodes:
+    name: "${{ matrix.scenario }} (${{matrix.distro}})"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
         - distro: ubuntu:20.04
+          scenario: default
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v2
@@ -26,13 +28,14 @@ jobs:
         run: |
           pip3 install -r requirements.txt
           ansible-galaxy install -r galaxy.yml
-          mkdir -p vault
-          echo "$env:VAULT_PASSWORD" >> ./vault/password
-          ls -l vault
         env:
           VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Molecule tests.
-        run: molecule test
+        run: |
+          mkdir -p vault
+          echo "$env:VAULT_PASSWORD" >> ./vault/password
+          ls -l vault
+          molecule test
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
