@@ -2,9 +2,9 @@ Olympus
 ====
 My Homelab Infrastructure
 
-[![GitHub Actions](https://img.shields.io/github/workflow/status/kilip/olympus/MetalCI/master?style=flat-square)](https://github.com/kilip/olympus/actions?query=workflow%3AMetalCI+branch%3Amaster)
+[![MetalCI](https://github.com/kilip/olympus/workflows/MetalCI/badge.svg)](https://github.com/kilip/olympus/actions?query=workflow%3AMetalCI+branch%3Amaster)
+[![ClusterCI](https://github.com/kilip/olympus/workflows/ClusterCI/badge.svg)](https://github.com/kilip/olympus/actions?query=workflow%3AClusterCI+branch%3Amaster)
 
-[![GitHub Actions](https://img.shields.io/github/workflow/status/kilip/olympus/ClusterCI/master?style=flat-square)](https://github.com/kilip/olympus/actions?query=workflow%3AClusterCI+branch%3Amaster)
 
 ### Overview
 View Network Diagrams [here](https://viewer.diagrams.net/?highlight=0000ff&layers=1&nav=1&title=olympus.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1IUUgyap_ueUx6EJSruuhZQEtDLzQllD1%26export%3Ddownload)
