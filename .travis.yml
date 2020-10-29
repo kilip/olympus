@@ -22,4 +22,4 @@ install:
 
 script:
   # Run tests.
-  - molecule test -s "${SCENARIO}"
+  - ANSIBLE_VAULT_PASSWORD_FILE=./vault/password molecule test -s "${SCENARIO}"
