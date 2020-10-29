@@ -1,0 +1,5 @@
+- hosts: localhost
+  tasks:
+    - name: include cluster role
+      include_role:
+        name: cluster

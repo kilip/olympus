@@ -1,37 +1,8 @@
 ---
-- hosts: all
-  tasks:
-    - name: check proxy config
-      set_fact:
-        _proxy: "{{ lookup('env','APT_PROXY') }}"
-        _mirror: "{{ lookup('env', 'APT_MIRROR') }}"
-    - name: set apt proxy
-      set_fact:
-        apt_proxy: "{{ _proxy }}"
-      when: _proxy|length > 0
+- name: Converge
+  hosts: localhost
+  connection: local
+  gather_facts: false
 
-    - name: set apt mirror
-      set_fact:
-        apt_mirror: "{{ _mirror }}"
-      when: _mirror|length > 0
-
-    - name: configure user
-      set_fact:
-        olympus_user: toni
-        olympus_homedir: "/home/toni"
-
-    - name: ensure group exists
-      group:
-        name: toni
-        state: present
-
-    - name: ensure user exists
-      user:
-        name: toni
-        group: toni
-        state: present
-        groups: sudo
-        append: yes
-
-- name: import converge playbook
-  import_playbook: "../../playbook-converge.yml"
+- name: import cluster playbook
+  import_playbook: ../../playbook-cluster.yml

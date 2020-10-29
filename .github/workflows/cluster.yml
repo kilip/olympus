@@ -11,12 +11,6 @@ jobs:
     name: "Scenario: ${{ matrix.scenario }} (${{matrix.distro}})"
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        include:
-        - distro: ubuntu:20.04
-          scenario: default
-        - distro: ubuntu:20.04
-          scenario: k3s
       fail-fast: false
     steps:
       - name: Check out the codebase.

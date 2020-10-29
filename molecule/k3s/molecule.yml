@@ -1,0 +1,55 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: k8s-node1
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu:20.04}"
+    pre_build_image: true
+    privileged: true
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - master
+    networks:
+      - name: k8s-test
+    ports:
+      - "6443:6443"
+  - name: k8s-node2
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu:20.04}"
+    pre_build_image: true
+    privileged: true
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - worker
+    networks:
+      - name: k8s-test
+  - name: k8s-node3
+    image: "kilip/molecule-${MOLECULE_DIST:-ubuntu:20.04}"
+    pre_build_image: true
+    privileged: true
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - worker
+    networks:
+      - name: k8s-test
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: "../../roles"
+    MOLECULE_NO_LOG: false
+    K3S_DOWNLOAD_URL: "${K3S_DOWNLOAD_URL:-https://github.com/rancher/k3s/releases/download}"
+    ANSIBLE_VAULT_PASSWORD_FILE: "../../vault/password"
+  inventory:
+    links:
+      group_vars: "./inventory/group_vars"
+      host_vars: "./inventory/host_vars"
+verifier:
+  name: ansible

@@ -1,0 +1,5 @@
+- name: gather facts
+  set_fact:
+    hello: world
+
+- debug: var=hello
