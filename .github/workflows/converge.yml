@@ -35,9 +35,9 @@ jobs:
 
       - name: Run Molecule tests.
         run: |
-          mkdir -p vault \
+          mkdir -p /tmp/vault \
           && echo "$env:VAULT_PASSWORD" > "$env:ANSIBLE_VAULT_PASSWORD_FILE" \
-          && cat ./vault/password \
+          && cat /tmp/vault/password \
           && molecule test -s "${SCENARIO}"
         env:
           PY_COLORS: '1'
@@ -45,4 +45,4 @@ jobs:
           MOLECULE_DIST: ${{ matrix.distro }}
           SCENARIO: ${{ matrix.scenario }}
           VAULT_PASSOWRD: ${{ secrets.VAULT_PASSWORD }}
-          ANSIBLE_VAULT_PASSWORD_FILE: "./vault/password"
+          ANSIBLE_VAULT_PASSWORD_FILE: "/tmp/vault/password"
