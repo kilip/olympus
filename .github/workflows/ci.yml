@@ -39,10 +39,9 @@ jobs:
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DIST: ${{ matrix.distro }}
           SCENARIO: ${{ matrix.scenario }}
-          VAULT_PASSOWRD: ${{ secrets.VAULT_PASSWORD }}
+          VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
           ANSIBLE_VAULT_PASSWORD_FILE: "/tmp/vault/password"
         run: |
           mkdir -p vault
           echo "$env:VAULT_PASSWORD" > vault/password
-          cat vault/password
           molecule test -s "${SCENARIO}"
