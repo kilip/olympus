@@ -1,4 +1,4 @@
-name: MetalCI
+name: ClusterCI
 
 on:
   push:
