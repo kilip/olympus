@@ -3,6 +3,6 @@
   tasks:
     - name: "include cluster role"
       include_role:
-        name: cluster
+        name: k3s
         tasks_from: "cleanup.yml"
       when: '"master" in group_names or "worker" in group_names'

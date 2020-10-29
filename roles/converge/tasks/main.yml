@@ -14,5 +14,5 @@
 
 - name: install/configures k8s master and worker nodes
   include_role:
-    name: cluster
+    name: k3s
   when: '"master" in group_names or "worker" in group_names'
