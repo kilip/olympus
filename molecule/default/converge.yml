@@ -4,7 +4,7 @@
     - name: check proxy config
       set_fact:
         _proxy: "{{ lookup('env','APT_PROXY') }}"
-        _mirror: "{{ lookup('env', 'APT_MIRROR')}}"
+        _mirror: "{{ lookup('env', 'APT_MIRROR') }}"
     - name: set apt proxy
       set_fact:
         apt_proxy: "{{ _proxy }}"

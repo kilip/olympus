@@ -11,6 +11,7 @@ services: docker
 env:
   matrix:
     - MOLECULE_DIST: ubuntu:20.04
+      SCENARIO: default
 
 install:
   # Install test dependencies.
@@ -19,5 +20,4 @@ install:
 
 script:
   # Run tests.
-  - molecule test
-  - molecule test -s cluster
+  - molecule test -s "${SCENARIO}"
