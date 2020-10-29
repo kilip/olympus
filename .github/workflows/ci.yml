@@ -1,4 +1,4 @@
-name: Converge
+name: Nodes Build
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  converge:
+  build:
     name: "Scenario: ${{ matrix.scenario }} (${{matrix.distro}})"
     runs-on: ubuntu-latest
     strategy:
@@ -40,7 +40,7 @@ jobs:
           MOLECULE_DIST: ${{ matrix.distro }}
           SCENARIO: ${{ matrix.scenario }}
           VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
-          ANSIBLE_VAULT_PASSWORD_FILE: "/tmp/vault/password"
+          ANSIBLE_VAULT_PASSWORD_FILE: "./vault/password"
         run: |
           mkdir -p vault
           echo "${VAULT_PASSWORD}" > vault/password
