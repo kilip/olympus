@@ -28,15 +28,15 @@ jobs:
         run: |
           pip3 install -r requirements.txt
           ansible-galaxy install -r galaxy.yml
-        env:
-          VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
       - name: Run Molecule tests.
         run: |
           mkdir -p vault
           echo "$env:VAULT_PASSWORD" >> ./vault/password
           ls -l vault
-          molecule test
+          molecule test -s "${SCENARIO}}"
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DIST: ${{ matrix.distro }}
+          SCENARIO: ${{ matrix.scenario }}
+          VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
