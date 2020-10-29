@@ -1,5 +1,5 @@
 k3s_download_url: "https://files.itstoni.com/k3s"
-k3s_version: v1.19.2+k3s1
+k3s_version: v1.18.10+k3s1
 ansible_user: toni
 extra_server_args:
   - --write-kubeconfig-mode 644
