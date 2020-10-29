@@ -1,0 +1,3 @@
+- name: install configures ohmyzsh
+  include: apps/ohmyzsh.yml
+  when: ohmyzsh

@@ -1,0 +1,9 @@
+dotfiles:
+  - .ssh/config
+  - .docker/config.json
+
+gpg: yes
+git: yes
+ohmyzsh: yes
+
+gpg_keys_file: "files/gpg-keys.asc"

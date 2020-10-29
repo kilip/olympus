@@ -2,6 +2,10 @@
 - name: Preflight Check
   include: preflight.yml
 
+- name: configures common setup
+  include_role:
+    name: "common"
+
 - name: install/configures proxy nodes
   include_role:
     name: "kilip.squid"

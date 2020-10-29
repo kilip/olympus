@@ -5,3 +5,4 @@ venv
 kubeconfig
 .vagrant
 *.vdi
+vault

@@ -1,0 +1,22 @@
+- name: configures apt proxy
+  template:
+    src: "apt-proxy.j2"
+    dest: "/etc/apt/apt.conf.d/99-olympus-proxy"
+    mode: 0644
+    backup: yes
+  when: apt_proxy is defined
+
+- name: configures apt mirror
+  template:
+    src: "sources.list.j2"
+    dest: "/etc/apt/sources.list"
+    backup: yes
+    mode: 0644
+  when: apt_mirror is defined
+
+- name: "update cache"
+  apt:
+    update_cache: yes
+    cache_valid_time: 600
+  when: ansible_os_family == 'Debian'
+  changed_when: false

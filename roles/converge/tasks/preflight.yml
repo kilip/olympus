@@ -9,9 +9,8 @@
         services: "{{ s.ansible_facts.services }}"
         host_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
 
-- name: "update cache"
-  apt:
-    update_cache: yes
-    cache_valid_time: 600
-  when: ansible_os_family == 'Debian'
-  changed_when: false
+    - name: set user facts
+      set_fact:
+        olympus_user: "{{ lookup('env','USER') }}"
+        olympus_homedir: "{{ lookup('env','HOME') }}"
+      when: "olympus_user is not defined"

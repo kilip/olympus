@@ -1,0 +1,19 @@
+---
+- name: git ~> installing git
+  package:
+    name:
+      - git
+    state: present
+
+#- name: git ~> global config setting
+#  when: git_global_config != False
+
+- name: git ~> configure git global section
+  become: yes
+  become_user: "{{ zeus_user }}"
+  git_config:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    scope: global
+    state: present
+  with_dict: "{{ git_global_config }}"

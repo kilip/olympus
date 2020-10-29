@@ -3,8 +3,9 @@ version: "3"
 dotenv: ['.env']
 
 vars:
-  ansible: "./venv/bin/ansible -i ${INVENTORY}"
-  playbook: "./venv/bin/ansible-playbook -i ${INVENTORY}"
+  inventory: "./inventory/production/hosts.ini"
+  ansible: "./venv/bin/ansible -i {{.inventory}}"
+  playbook: "./venv/bin/ansible-playbook -i {{.inventory}}"
   molecule: "./venv/bin/molecule"
 
 tasks:
@@ -25,13 +26,13 @@ tasks:
   create-config:
     desc: create new inventory
     cmds:
-      - "mkdir -p ./inventory/{{.name}}" 
+      - "mkdir -p ./inventory/{{.name}}"
       - "cp -rvf ./inventory/sample/* ./inventory/{{.name}}"
   ping:
     desc: check nodes availability
     cmds:
     - "{{.ansible}} -m ping all"
-        
+
   converge:
     desc: converge nodes into k3s clusters
     cmds:
@@ -46,12 +47,17 @@ tasks:
     desc: reboot all cluster nodes
     cmds:
     - "{{.ansible}} -K -b -a 'reboot' k3s_nodes"
-  
+
   fetch-kubeconfig:
     desc: fetch kubeconfig from nodes
     cmds:
     - "scp {{.server}}:/etc/rancher/k3s/k3s.yaml kubeconfig"
     - "sed -i 's|127.0.0.1|{{.server}}|g' kubeconfig"
+
+  debug:
+    desc: run debug playbook
+    cmds:
+      - "{{.playbook}} -K -b playbook-debug.yml"
 
   test-default:
     desc: molecule default scenario testing

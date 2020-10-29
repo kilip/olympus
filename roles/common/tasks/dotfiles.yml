@@ -1,0 +1,17 @@
+- name: ensure directory exists
+  file:
+    path: "{{ item }}"
+    owner: "{{ olympus_user }}"
+    group: "{{ olympus_user }}"
+    mode: 0700
+    state: directory
+  with_items:
+    - "{{ olympus_homedir }}/.ssh"
+    - "{{ olympus_homedir }}/.docker"
+
+- name: copy dotfiles
+  copy:
+    src: "files/dotfiles/{{ item }}"
+    dest: "{{ olympus_homedir }}/{{ item }}"
+    mode: preserve
+  with_items: "{{ dotfiles }}"

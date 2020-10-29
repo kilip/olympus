@@ -1,10 +1,13 @@
 ---
 dependency:
   name: galaxy
+
 driver:
   name: docker
+
 platforms:
-  - name: olympus-node
+  - instance: olympus-node
+    name: olympus-node
     image: "kilip/molecule-${MOLECULE_DIST:-ubuntu:20.04}"
     pre_build_image: true
     privileged: true
@@ -13,7 +16,7 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
       - proxy
-      - mysql
+      #- mysql
 
 provisioner:
   name: ansible
@@ -21,15 +24,20 @@ provisioner:
     ANSIBLE_ROLES_PATH: "../../roles"
     MOLECULE_NO_LOG: false
     K3S_DOWNLOAD_URL: "${K3S_DOWNLOAD_URL:-https://github.com/rancher/k3s/releases/download}"
+    ANSIBLE_VAULT_PASSWORD_FILE: "../../vault/password"
   inventory:
     links:
       #hosts: "./inventory/hosts.ini"
       group_vars: "./inventory/group_vars"
       host_vars: "./inventory/host_vars"
   playbooks:
-    converge: "../../playbook-converge.yml"
+    #prepare: prepare.yml
+    #converge: "../../playbook-converge.yml"
     #converge: "../../.scratches/debug.yml"
-    verify: "../../playbook-verify.yml"    
+    verify: "../../playbook-verify.yml"
+  #config_options:
+  #  defaults:
+  #    vault_password_file: "/home/toni/vault/password"
 
 lint: |
   ansible-lint

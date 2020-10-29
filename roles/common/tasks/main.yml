@@ -1,0 +1,8 @@
+- name: setup apt
+  include: pacman.yml
+
+- name: install apps
+  include: install.yml
+
+- name: configures dotfiles
+  include: dotfiles.yml

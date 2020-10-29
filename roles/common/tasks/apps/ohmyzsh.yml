@@ -1,0 +1,10 @@
+---
+- name: install zsh shell
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - zsh
+    - zsh-antigen
+    - zsh-syntax-highlighting
+    - zsh-autosuggestions
