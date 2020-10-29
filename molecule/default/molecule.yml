@@ -30,9 +30,6 @@ provisioner:
       #hosts: "./inventory/hosts.ini"
       group_vars: "./inventory/group_vars"
       host_vars: "./inventory/host_vars"
-  playbooks:
-    verify: "../../playbook-verify.yml"
-
 lint: |
   ansible-lint
 

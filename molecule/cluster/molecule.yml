@@ -51,9 +51,5 @@ provisioner:
     links:
       group_vars: "./inventory/group_vars"
       host_vars: "./inventory/host_vars"
-  playbooks:
-    converge: "../../playbook-converge.yml"
-    verify: "../../playbook-verify.yml"
-    cleanup: "../../playbook-cleanup.yml"
 verifier:
   name: ansible

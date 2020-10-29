@@ -34,11 +34,6 @@ jobs:
         continue-on-error: true
 
       - name: Run Molecule tests.
-        run: |
-          mkdir -p /tmp/vault \
-          && echo "$env:VAULT_PASSWORD" > "$env:ANSIBLE_VAULT_PASSWORD_FILE" \
-          && cat /tmp/vault/password \
-          && molecule test -s "${SCENARIO}"
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
@@ -46,3 +41,8 @@ jobs:
           SCENARIO: ${{ matrix.scenario }}
           VAULT_PASSOWRD: ${{ secrets.VAULT_PASSWORD }}
           ANSIBLE_VAULT_PASSWORD_FILE: "/tmp/vault/password"
+        run: |
+          mkdir -p /tmp/vault
+          echo "$env:VAULT_PASSWORD" > /tmp/vault/password
+          cat /tmp/vault/password \
+          molecule test -s "${SCENARIO}"
