@@ -1,4 +1,0 @@
-- hosts: all
-  tasks:
-    - name: prepare foo
-      debug: var=hello
