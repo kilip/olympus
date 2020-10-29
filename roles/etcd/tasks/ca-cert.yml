@@ -15,7 +15,7 @@
     path: "{{ _etcd_cert_dir }}/ca.pem"
   register: result
 
-- set_fact: 
+- set_fact:
     _etcd_create_cert: "{{ not result.stat.exists }}"
 
 - debug: var=_etcd_create_cert
@@ -25,17 +25,22 @@
     cmd: "{{ item }}"
   args:
     chdir: "{{ _etcd_cert_dir }}"
-    creates: 
+    creates:
       - "{{ _etcd_cert_dir }}/ca.pem"
   with_items:
-    - echo '{"CN":"CA","key":{"algo":"rsa","size":2048}}' | {{ cfssl_bin }} gencert -initca - | {{ cfssljson_bin }} -bare ca -
-    - echo '{"signing":{"default":{"expiry":"43800h","usages":["signing","key encipherment","server auth","client auth"]}}}' > ca-config.json
+    - echo '{ "CN":"CA","key":{ "algo":"rsa","size":2048 }}' | {{ cfssl_bin }} gencert -initca - | {{ cfssljson_bin }} -bare ca -
+    - echo '{ "signing":{ "default":{ "expiry":"43800h","usages":["signing","key encipherment","server auth","client auth"] }}}' > ca-config.json
   when: _etcd_create_cert
 
 - name: ensure server cert exists
   shell: |
-    echo '{"CN":"'{{ item }}'","hosts":[""],"key":{"algo":"rsa","size":2048}}' |
-    {{ cfssl_bin }} gencert -config=ca-config.json -ca=ca.pem -ca-key=ca-key.pem -hostname="{{ hostvars[item]['ansible_default_ipv4']['address'] }},{{ item }}" - |
+    set -o pipefail && \
+    echo '{"CN":"'{{ item }}'","hosts":[""],"key":{ "algo":"rsa","size":2048 }}' |
+    {{ cfssl_bin }} gencert \
+    -config=ca-config.json \
+    -ca=ca.pem \
+    -ca-key=ca-key.pem \
+    -hostname="{{ hostvars[item]['ansible_default_ipv4']['address'] }},{{ item }}" - |
     {{ cfssljson_bin }} -bare {{ item }}
   args:
     chdir: "{{ _etcd_cert_dir }}"
@@ -46,10 +51,11 @@
   file:
     path: "{{ etcd_cert_local_temp_dir }}"
     state: directory
+    mode: 0644
 
 - name: generate cert files copy list
-  shell: (find . -maxdepth 1 -type f) | cut -d'/' -f2
-  args: 
+  shell: set -o pipefail && (find . -maxdepth 1 -type f) | cut -d'/' -f2
+  args:
     chdir: "{{ _etcd_cert_dir }}"
   register: _etcd_cert_files
   changed_when: false

@@ -17,6 +17,7 @@
   template:
     src: "etcd.service.j2"
     dest: "/lib/systemd/system/etcd.service"
+    mode: 0644
   notify: "{{ _etcd_handler }}"
 
 - name: configures etcd

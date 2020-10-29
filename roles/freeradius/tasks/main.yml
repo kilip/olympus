@@ -12,11 +12,13 @@
   template:
     src: clients.conf.j2
     dest: /etc/freeradius/3.0/clients.conf
+    mode: 0644
 
 - name: ensure clients.conf template rendered
   template:
     src: clients.conf.j2
     dest: /etc/freeradius/3.0/clients.conf
+    mode: 0644
   notify: restart freeradius
 
 - name: ensure user exists

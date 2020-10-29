@@ -8,7 +8,7 @@
   until: ensure_k3s_started is succeeded
   retries: "{{ play_hosts | length }}"
   delay: 5
-  
+
 - name: restart k3s
   systemd:
     name: "{{ service_name }}"

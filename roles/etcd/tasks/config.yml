@@ -2,6 +2,7 @@
   copy:
     src: "{{ etcd_cert_local_temp_dir }}/{{ item.src }}"
     dest: "{{ etcd_conf_dir }}/{{ item.dest }}"
+    mode: 0644
   with_items:
     - src: "ca.pem"
       dest: "etcd-ca.crt"
@@ -19,4 +20,5 @@
   template:
     src: "etcd.conf.j2"
     dest: "{{ etcd_conf_dir }}/etcd.conf"
+    mode: 0644
   notify: "{{ _etcd_handler }}"

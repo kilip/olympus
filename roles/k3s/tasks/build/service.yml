@@ -6,7 +6,7 @@
 - name: set handler
   set_fact:
     handler: "{{ 'restart k3s' if state == 'running' else 'start k3s' }}"
-  
+
 - name: Copy K3s service file
   template:
     src: "{{ service_template }}"
