@@ -15,8 +15,7 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
-      - proxy
-      #- mysql
+      - all
 
 provisioner:
   name: ansible
