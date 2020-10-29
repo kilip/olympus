@@ -17,6 +17,8 @@ install:
   # Install test dependencies.
   - touch .env
   - task deps
+  - mkdir -p vault
+  - echo "${VAULT_PASSWORD}" >> ./vault/password
 
 script:
   # Run tests.
