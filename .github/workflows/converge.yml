@@ -35,10 +35,10 @@ jobs:
 
       - name: Run Molecule tests.
         run: |
-          mkdir -p vault
-          echo "$env:VAULT_PASSWORD" > "$env:ANSIBLE_VAULT_PASSWORD_FILE"
-          cat ./vault/password
-          molecule test -s "${SCENARIO}"
+          mkdir -p vault \
+          && echo "$env:VAULT_PASSWORD" > "$env:ANSIBLE_VAULT_PASSWORD_FILE" \
+          && cat ./vault/password \
+          && molecule test -s "${SCENARIO}"
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
