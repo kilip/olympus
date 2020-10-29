@@ -44,5 +44,5 @@ jobs:
         run: |
           mkdir -p /tmp/vault
           echo "$env:VAULT_PASSWORD" > /tmp/vault/password
-          cat /tmp/vault/password \
+          cat /tmp/vault/password
           molecule test -s "${SCENARIO}"
