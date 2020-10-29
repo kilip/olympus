@@ -42,4 +42,5 @@ jobs:
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DIST: ${{ matrix.distro }}
           SCENARIO: ${{ matrix.scenario }}
-          ANSIBLE_VAULT_PASSWORD: ${{ secrets.VAULT_PASSWORD }}
+          VAULT_PASSOWRD: ${{ secrets.VAULT_PASSWORD }}
+          ANSIBLE_VAULT_PASSWORD_FILE: "./vault/password"
