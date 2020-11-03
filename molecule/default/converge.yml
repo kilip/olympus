@@ -34,4 +34,8 @@
         append: yes
 
 - name: import converge playbook
+  vars:
+    k8s_tools: no
+    apt_mirror: mirror.deace.id
+    apt_proxy: http://medusa.itstoni.com:3128
   import_playbook: "../../playbook-converge.yml"

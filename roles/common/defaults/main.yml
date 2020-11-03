@@ -2,8 +2,26 @@ dotfiles:
   - .ssh/config
   - .docker/config.json
 
+
 gpg: yes
+ssh: yes
 git: yes
 ohmyzsh: yes
 
-gpg_keys_file: "files/gpg-keys.asc"
+gpg_user: "{{ olympus_user }}"
+gpg_group: "{{ olympus_user }}"
+gpg_temp_dir: "/tmp/gpg"
+gpg_key_file: "files/gpg-keys.asc"
+gpg_key_id: "D29147BED2B21BCBA9E4B4DD069F74ACAD65EED9"
+gpg_import_key: yes
+
+git_global_config:
+  user.name: "Anthonius Munthi"
+  user.email: me@itstoni.com
+  user.signingKey: 069F74ACAD65EED9
+  commit.gpgSign: "true"
+  core.excludesfile: "{{ olympus_homedir }}/.gitignore"
+
+k8s_tools: no
+k8s_kubectl: yes
+k8s_helm: yes

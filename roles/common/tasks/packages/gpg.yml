@@ -10,8 +10,8 @@
 
 - name: gpg ~> copy gpg keys
   copy:
-    src: "{{ gpg_keys_file }}"
-    dest: "{{ gpg_temp_dir }}/gpg-keys.asc"
+    src: "{{ gpg_key_file }}"
+    dest: "{{ gpg_temp_dir }}/gpg_key.asc"
     owner: "{{ gpg_user }}"
     group: "{{ gpg_group }}"
     mode: 0600
@@ -33,5 +33,5 @@
 - name: Import private key
   become: yes
   become_user: "{{ gpg_user }}"
-  command: "gpg --import {{ gpg_temp_dir }}/gpg-keys.asc"
+  command: "gpg --import {{ gpg_temp_dir }}/gpg_key.asc"
   when: gpg_import_key

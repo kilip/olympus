@@ -10,7 +10,7 @@
 
 - name: git ~> configure git global section
   become: yes
-  become_user: "{{ zeus_user }}"
+  become_user: "{{ olympus_user }}"
   git_config:
     name: "{{ item.key }}"
     value: "{{ item.value }}"

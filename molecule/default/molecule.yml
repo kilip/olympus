@@ -16,6 +16,7 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     groups:
       - all
+      - proxy
 
 provisioner:
   name: ansible
