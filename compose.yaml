@@ -58,6 +58,18 @@ services:
       - ./vars/mosquitto:/data
     user: "1000:1000"
 
+  postgres:
+    container_name: postgres
+    image: postgres:16-alpine
+    restart: always
+    env_file:
+      - .env
+      - .env.local
+    volumes:
+      - "./var/postgres:/var/lib/postgresql/data"
+    ports:
+      - 5432:5432
+
   hass:
     container_name: olympus.hass
     image: ghcr.io/onedr0p/home-assistant:2024.4.3
@@ -66,4 +78,4 @@ services:
       - .env
       - .env.local
     volumes:
-      - ./apps/hass:/config
+      - /home/code/hass:/config:rw

@@ -8,6 +8,10 @@ tasks:
     desc: bring containers up
     cmd: docker compose up -d {{.CLI_ARGS}}
 
+  dc:rm:
+    desc: bring containers up
+    cmd: docker compose rm {{.CLI_ARGS}}
+
   dc:start:
     desc: bring containers up
     cmd: docker compose start
@@ -23,13 +27,15 @@ tasks:
   init:
     desc: configure containers
     cmds:
-      - mkdir -p vars/mosquitto
-      - chmod 0777 vars/mosquitto
+      - sudo mkdir -p vars/mosquitto
+      - sudo chmod 0777 vars/mosquitto
       - task: secrets
 
   secrets:
     desc: initialize secrets configuration
     cmds:
+      - pass git pull
+      - pass config/.env.local > .env.local
       - task: .mosquitto
 
   .mosquitto:
@@ -37,6 +43,5 @@ tasks:
       - pass config/mosquitto.conf > ./apps/mosquitto/mosquitto.conf
       - pass config/mosquitto.pwd > ./apps/mosquitto/mosquitto.pwd
       - chmod 0700 ./apps/mosquitto/mosquitto.pwd
-      #- sudo chown 1883:1883 ./apps/mosquitto/mosquitto.pwd
-      - docker compose exec mosquitto mosquitto_passwd -U /tmp/mosquitto.pwd
-      - docker compose restart mosquitto
+      - docker compose exec mosquitto mosquitto_passwd -U /tmp/mosquitto.pwd || true
+      - docker compose restart mosquitto || true
