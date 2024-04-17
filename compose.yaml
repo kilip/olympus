@@ -1,0 +1,69 @@
+---
+services:
+  tunnel:
+    container_name: olympus.tunnel
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel run
+    env_file:
+      - .env
+      - .env.local
+
+  swag:
+    image: lscr.io/linuxserver/swag
+    container_name: olympus.swag
+    cap_add:
+      - NET_ADMIN
+    env_file:
+      - .env
+      - .env.local
+    volumes:
+      - ./vars/swag:/config
+      - ./secrets/cloudflare.ini:/config/dns-conf/cloudflare.ini
+    restart: unless-stopped
+
+  haproxy:
+    container_name: olympus.haproxy
+    image: haproxy:latest
+    volumes:
+      - ./apps/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - ./vars/swag/etc/letsencrypt:/etc/letsencrypt
+    env_file:
+      - .env
+      - .env.local
+    ports:
+      - 80:80
+      - 443:443
+      - 1883:1883
+    user: "1000:1000"
+    depends_on:
+      - swag
+
+  portainer:
+    container_name: olympus.portainer
+    image: portainer/portainer-ce:latest
+    restart: unless-stopped
+    volumes:
+      - ./vars/portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  mosquitto:
+    container_name: olympus.mosquitto
+    image: public.ecr.aws/docker/library/eclipse-mosquitto:2.0.18
+    restart: unless-stopped
+    volumes:
+      - ./apps/mosquitto/mosquitto.pwd:/mosquitto/config/mosquitto.pwd:rw
+      - ./apps/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./apps/mosquitto/mosquitto.pwd:/tmp/mosquitto.pwd:rw
+      - ./vars/mosquitto:/data
+    user: "1000:1000"
+
+  hass:
+    container_name: olympus.hass
+    image: ghcr.io/onedr0p/home-assistant:2024.4.3
+    restart: unless-stopped
+    env_file:
+      - .env
+      - .env.local
+    volumes:
+      - ./apps/hass:/config

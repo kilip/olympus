@@ -1,0 +1,42 @@
+---
+version: "3"
+
+tasks:
+  default: task -l
+
+  dc:up:
+    desc: bring containers up
+    cmd: docker compose up -d {{.CLI_ARGS}}
+
+  dc:start:
+    desc: bring containers up
+    cmd: docker compose start
+
+  dc:stop:
+    desc: stop containers
+    cmd: docker compose stop {{.CLI_ARGS}}
+
+  dc:logs:
+    desc: show container logs
+    cmd: docker compose logs -f --tail 10 {{.CLI_ARGS}}
+
+  init:
+    desc: configure containers
+    cmds:
+      - mkdir -p vars/mosquitto
+      - chmod 0777 vars/mosquitto
+      - task: secrets
+
+  secrets:
+    desc: initialize secrets configuration
+    cmds:
+      - task: .mosquitto
+
+  .mosquitto:
+    cmds:
+      - pass config/mosquitto.conf > ./apps/mosquitto/mosquitto.conf
+      - pass config/mosquitto.pwd > ./apps/mosquitto/mosquitto.pwd
+      - chmod 0700 ./apps/mosquitto/mosquitto.pwd
+      #- sudo chown 1883:1883 ./apps/mosquitto/mosquitto.pwd
+      - docker compose exec mosquitto mosquitto_passwd -U /tmp/mosquitto.pwd
+      - docker compose restart mosquitto

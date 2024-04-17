@@ -1,0 +1,11 @@
+.env.local
+vars/*
+!vars/.gitkeep
+secrets/*
+!secrets/.gitkeep
+
+apps/mosquitto/*
+!apps/mosquitto/.gitkeep
+
+apps/hass/*
+!apps/hass/.gitkeep
