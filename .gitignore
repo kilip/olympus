@@ -9,3 +9,5 @@ apps/mosquitto/*
 
 apps/hass/*
 !apps/hass/.gitkeep
+
+.private

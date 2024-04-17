@@ -4,23 +4,27 @@ version: "3"
 tasks:
   default: task -l
 
-  dc:up:
+  up:
     desc: bring containers up
     cmd: docker compose up -d {{.CLI_ARGS}}
 
-  dc:rm:
+  rm:
     desc: bring containers up
     cmd: docker compose rm {{.CLI_ARGS}}
 
-  dc:start:
+  start:
     desc: bring containers up
     cmd: docker compose start
+  
+  restart:
+    desc: bring containers restart
+    cmd: docker compose restart {{.CLI_ARGS}}
 
-  dc:stop:
+  stop:
     desc: stop containers
     cmd: docker compose stop {{.CLI_ARGS}}
 
-  dc:logs:
+  logs:
     desc: show container logs
     cmd: docker compose logs -f --tail 10 {{.CLI_ARGS}}
 
@@ -34,8 +38,10 @@ tasks:
   secrets:
     desc: initialize secrets configuration
     cmds:
+      - mkdir -p ./secrets/
       - pass git pull
-      - pass config/.env.local > .env.local
+      - pass config/env.local > .env.local
+      - pass config/cloudflare.ini > ./secrets/cloudflare.ini
       - task: .mosquitto
 
   .mosquitto:
